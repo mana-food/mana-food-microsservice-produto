@@ -34,66 +34,65 @@ jobs:
       - name: Rodar Testes
         run: dotnet test --configuration Release --no-build --verbosity normal
   
-    # 2. Análise SonarQube
-    sonarqube-analysis:
-      runs-on: ubuntu-latest
-      needs: build-and-tests
-      steps:
-        - name: Fazer checkout do repositório
-          uses: actions/checkout@v4
-          with:
-            fetch-depth: 0
+  # 2. Análise SonarQube
+  sonarqube-analysis:
+    runs-on: ubuntu-latest
+    needs: build-and-tests
+    steps:
+      - name: Fazer checkout do repositório
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-        - name: Configurar .NET
-          uses: actions/setup-dotnet@v4
-          with:
-            dotnet-version: '9.0.x'
-            
-        - name: Cache de pacotes do SonarQube Cloud
-          uses: actions/cache@v4
-          with:
-            path: ~\sonar\cache
-            key: ${{ runner.os }}-sonar
-            restore-keys: ${{ runner.os }}-sonar
-            
-        - name: Cache do scanner do SonarQube Cloud
-          id: cache-sonar-scanner
-          uses: actions/cache@v4
-          with:
-            path: ${{ runner.temp }}\scanner
-            key: ${{ runner.os }}-sonar-scanner
-            restore-keys: ${{ runner.os }}-sonar-scanner
-            
-        - name: Instalar scanner do SonarQube Cloud
-          if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
-          shell: powershell
-          run: |
-            New-Item -Path ${{ runner.temp }}\scanner -ItemType Directory
-            dotnet tool update dotnet-sonarscanner --tool-path ${{ runner.temp }}\scanner
+      - name: Configurar .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+          
+      - name: Cache de pacotes do SonarQube Cloud
+        uses: actions/cache@v4
+        with:
+          path: ~\sonar\cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+          
+      - name: Cache do scanner do SonarQube Cloud
+        id: cache-sonar-scanner
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}\scanner
+          key: ${{ runner.os }}-sonar-scanner
+          restore-keys: ${{ runner.os }}-sonar-scanner
+          
+      - name: Instalar scanner do SonarQube Cloud
+        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+        shell: powershell
+        run: |
+          New-Item -Path ${{ runner.temp }}\scanner -ItemType Directory
+          dotnet tool update dotnet-sonarscanner --tool-path ${{ runner.temp }}\scanner
 
-        - name: Executar Análise SonarQube
-          env:
-            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-            SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} 
-          run: |
-            dotnet tool install --global dotnet-sonarscanner
-            export PATH="$PATH:/home/runner/.dotnet/tools"
-            dotnet sonarscanner begin \
-              /k:"mana-food_mana-food-microsservice-produto" \
-              /o:"mana-food" \
-              /d:sonar.host.url="$SONAR_HOST_URL" \
-              /d:sonar.login="$SONAR_TOKEN" \
-              /d:sonar.branch.name="main" \
-              /d:sonar.exclusions="**/bin/**,**/obj/**,**/*.dll,**/*.exe" \
-              /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
-            dotnet build --no-incremental
-            dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
-
+      - name: Executar Análise SonarQube
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} 
+        run: |
+          dotnet tool install --global dotnet-sonarscanner
+          export PATH="$PATH:/home/runner/.dotnet/tools"
+          dotnet sonarscanner begin \
+            /k:"mana-food_mana-food-microsservice-produto" \
+            /o:"mana-food" \
+            /d:sonar.host.url="$SONAR_HOST_URL" \
+            /d:sonar.login="$SONAR_TOKEN" \
+            /d:sonar.branch.name="main" \
+            /d:sonar.exclusions="**/bin/**,**/obj/**,**/*.dll,**/*.exe" \
+            /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
+          dotnet build --no-incremental
+          dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
 
   # 3. Build e Push da Imagem Docker
   docker-build-push:
     runs-on: ubuntu-latest
-    needs: build-and-tests
+    needs: sonarqube-analysis
     permissions:
       contents: read
       packages: write

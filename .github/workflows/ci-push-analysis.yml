@@ -30,11 +30,12 @@ jobs:
           mkdir -p TestResults
           found=0
           # Procura projetos de teste em todo o repositório (prefira colocar os testes em ./tests)
-          for proj in $(find . -type f \( -iname '*test*.csproj' -o -iname '*tests*.csproj' \)); do
-            found=1
-            echo "Executando testes: $proj"
-            dotnet test "$proj" --configuration Release --no-build --verbosity normal
-          done
+          find . -type f \( -iname '*test*.csproj' -o -iname '*tests*.csproj' \) -print0 \
+            | while IFS= read -r -d '' proj; do
+              found=1
+              echo "Executando testes: $proj"
+              dotnet test "$proj" --configuration Release --no-build --verbosity normal
+            done
           if [ $found -eq 0 ]; then
             echo "Aviso: nenhum projeto de teste (.csproj) encontrado."
           fi
@@ -43,12 +44,18 @@ jobs:
         run: |
           mkdir -p TestResults
           found=0
-          for proj in $(find . -type f \( -iname '*test*.csproj' -o -iname '*tests*.csproj' \)); do
-            found=1
-            name=$(basename "$proj" .csproj)
-            echo "Executando testes com cobertura: $proj -> TestResults/${name}.coverage.*"
-            dotnet test "$proj" --configuration Release --no-build --verbosity normal "/p:CollectCoverage=true" "/p:CoverletOutput=TestResults/${name}.coverage" "/p:CoverletOutputFormat=json,cobertura"
-          done
+          # Usa find -print0 para suportar nomes com espaços; roda um dotnet test por projeto
+          find . -type f \( -iname '*test*.csproj' -o -iname '*tests*.csproj' \) -print0 \
+            | while IFS= read -r -d '' proj; do
+              found=1
+              name=$(basename "$proj" .csproj)
+              echo "Executando testes com cobertura: $proj -> TestResults/${name}.coverage.*"
+              dotnet test "$proj" \
+                --configuration Release --no-build --verbosity normal \
+                "/p:CollectCoverage=true" \
+                "/p:CoverletOutput=TestResults/${name}.coverage" \
+                "/p:CoverletOutputFormat=json,cobertura"
+            done
           if [ $found -eq 0 ]; then
             echo "Aviso: nenhum projeto de teste encontrado. Pulando cobertura."
           fi
@@ -57,10 +64,13 @@ jobs:
         run: dotnet tool install --global dotnet-reportgenerator-globaltool
 
       - name: Gerar Relatório de Cobertura
-        run: reportgenerator -reports:**/coverage.cobertura.xml -targetdir:coverage-report -reporttypes:Html
+        run: |
+          # Ajusta o padrão para buscar todos os arquivos de cobertura gerados dentro de TestResults
+          reportgenerator -reports:TestResults/**/*.coverage.cobertura.xml -targetdir:coverage-report -reporttypes:Html
 
       - name: Upload do Relatório de Cobertura
         uses: actions/upload-artifact@v4
         with:
           name: cobertura-relatorio
           path: coverage-report
+

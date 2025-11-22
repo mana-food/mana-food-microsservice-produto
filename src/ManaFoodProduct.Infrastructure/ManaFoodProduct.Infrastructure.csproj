@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ManaFoodProduct.Domain\ManaFoodProduct.Domain.csproj" />
+    <ProjectReference Include="..\ManaFoodProduct.Application\ManaFoodProduct.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -6,11 +6,9 @@ import java.util.*
 
 interface BaseRepository<T : BaseEntity> {
 
-    suspend fun getAll(): List<T>
-    suspend fun getAllPaged(page: Int, pageSize: Int): Paged<T>
-    suspend fun getByIds(ids: List<UUID>): List<T>
-    suspend fun getBy(predicate: (T) -> Boolean): T?
-    suspend fun create(entity: T): T
-    suspend fun update(entity: T): T
-    suspend fun delete(entity: T)
+    fun findById(id: UUID): T?
+    fun findAll(page: Int, pageSize: Int): Paged<T>
+    fun findByIds(ids: List<UUID>): List<T>
+    fun save(entity: T): T
+    fun deleteById(id: UUID): Boolean
 }

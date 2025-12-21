@@ -3,7 +3,7 @@ package br.com.manafood.manafoodpoduct.domain.model
 import br.com.manafood.manafoodpoduct.domain.common.BaseEntity
 import java.util.*
 
-class Item(
+data class Item(
     override val id: UUID? = null,
     override val createdBy: UUID,
     override val updatedBy: UUID? = null,

@@ -8,6 +8,7 @@ import br.com.manafood.manafoodpoduct.application.usecase.product.commands.creat
 import br.com.manafood.manafoodpoduct.application.usecase.product.commands.delete.DeleteProductUseCase
 import br.com.manafood.manafoodpoduct.application.usecase.product.commands.update.UpdateProductUseCase
 import br.com.manafood.manafoodpoduct.application.usecase.product.queries.getall.GetAllProductsQuery
+import br.com.manafood.manafoodpoduct.application.usecase.product.queries.getall.GetAllProductsUseCase
 import br.com.manafood.manafoodpoduct.application.usecase.product.queries.getbyid.GetProductByIdQuery
 import br.com.manafood.manafoodpoduct.application.usecase.product.queries.getbyid.GetProductByIdUseCase
 import org.springframework.http.ResponseEntity
@@ -37,15 +38,14 @@ class ProductController(
         return ResponseEntity.ok(ProductMapper.toResponse(product))
     }
 
-    @PutMapping("/{id}")
+    @PutMapping
     fun update(
-        @PathVariable id: UUID,
         @RequestBody request: UpdateProductRequest
     ): ResponseEntity<ProductResponse> {
 
         val updatedBy = UUID.randomUUID()
 
-        val command = ProductMapper.toUpdateCommand(request, id, updatedBy)
+        val command = ProductMapper.toUpdateCommand(request, updatedBy)
         val product = updateProductUseCase.execute(command)
 
         return ResponseEntity.ok(ProductMapper.toResponse(product))

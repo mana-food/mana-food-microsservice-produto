@@ -7,6 +7,9 @@ import br.com.manafood.manafoodpoduct.adapter.response.category.CategoryResponse
 import br.com.manafood.manafoodpoduct.application.usecase.category.commands.create.CreateCategoryUseCase
 import br.com.manafood.manafoodpoduct.application.usecase.category.commands.delete.DeleteCategoryUseCase
 import br.com.manafood.manafoodpoduct.application.usecase.category.commands.update.UpdateCategoryUseCase
+import br.com.manafood.manafoodpoduct.application.usecase.category.queries.getall.GetAllCategoriesQuery
+import br.com.manafood.manafoodpoduct.application.usecase.category.queries.getall.GetAllCategoriesUseCase
+import br.com.manafood.manafoodpoduct.application.usecase.category.queries.getbyid.GetCategoryByIdQuery
 import br.com.manafood.manafoodpoduct.application.usecase.category.queries.getbyid.GetCategoryByIdUseCase
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -18,8 +21,8 @@ class CategoryController(
     private val createCategoryUseCase: CreateCategoryUseCase,
     private val updateCategoryUseCase: UpdateCategoryUseCase,
     private val deleteCategoryUseCase: DeleteCategoryUseCase,
-    private val getCategoryByIdUseCase: GetCategoryByIdUseCase
-//    private val getAllCategoriesUseCase: GetAllCategoriesUseCase
+    private val getCategoryByIdUseCase: GetCategoryByIdUseCase,
+    private val getAllCategoriesUseCase: GetAllCategoriesUseCase
 ) {
 
     @PostMapping
@@ -35,15 +38,14 @@ class CategoryController(
         return ResponseEntity.ok(CategoryMapper.toResponse(category))
     }
 
-    @PutMapping("/{id}")
-    fun update(
-        @PathVariable id: UUID,
+    @PutMapping
+    suspend fun update(
         @RequestBody request: UpdateCategoryRequest
     ): ResponseEntity<CategoryResponse> {
 
         val updatedBy = UUID.randomUUID()
 
-        val command = CategoryMapper.toUpdateCommand(request, id, updatedBy)
+        val command = CategoryMapper.toUpdateCommand(request, updatedBy)
         val category = updateCategoryUseCase.execute(command)
 
         return ResponseEntity.ok(CategoryMapper.toResponse(category))
@@ -62,7 +64,8 @@ class CategoryController(
     @GetMapping("/{id}")
     fun getById(@PathVariable id: UUID): ResponseEntity<CategoryResponse> {
         val category = getCategoryByIdUseCase.execute(GetCategoryByIdQuery(id))
-        return ResponseEntity.ok(CategoryMapper.toResponse(category))
+        return if (category != null) ResponseEntity.ok(CategoryMapper.toResponse(category)) else ResponseEntity.notFound()
+            .build()
     }
 
     @GetMapping

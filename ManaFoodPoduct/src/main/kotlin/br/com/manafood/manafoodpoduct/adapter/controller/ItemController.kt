@@ -7,6 +7,9 @@ import br.com.manafood.manafoodpoduct.adapter.response.item.ItemResponse
 import br.com.manafood.manafoodpoduct.application.usecase.item.commands.create.CreateItemUseCase
 import br.com.manafood.manafoodpoduct.application.usecase.item.commands.delete.DeleteItemUseCase
 import br.com.manafood.manafoodpoduct.application.usecase.item.commands.update.UpdateItemUseCase
+import br.com.manafood.manafoodpoduct.application.usecase.item.queries.getall.GetAllItemsQuery
+import br.com.manafood.manafoodpoduct.application.usecase.item.queries.getall.GetAllItemsUseCase
+import br.com.manafood.manafoodpoduct.application.usecase.item.queries.getbyid.GetItemByIdQuery
 import br.com.manafood.manafoodpoduct.application.usecase.item.queries.getbyid.GetItemByIdUseCase
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -35,15 +38,14 @@ class ItemController(
         return ResponseEntity.ok(ItemMapper.toResponse(item))
     }
 
-    @PutMapping("/{id}")
+    @PutMapping
     fun update(
-        @PathVariable id: UUID,
         @RequestBody request: UpdateItemRequest
     ): ResponseEntity<ItemResponse> {
 
         val updatedBy = UUID.randomUUID()
 
-        val command = ItemMapper.toUpdateCommand(request, id, updatedBy)
+        val command = ItemMapper.toUpdateCommand(request, updatedBy)
         val item = updateItemUseCase.execute(command)
 
         return ResponseEntity.ok(ItemMapper.toResponse(item))

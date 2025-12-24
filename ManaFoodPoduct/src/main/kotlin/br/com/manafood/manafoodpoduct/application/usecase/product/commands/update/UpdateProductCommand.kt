@@ -8,5 +8,6 @@ data class UpdateProductCommand(
     val description: String?,
     val unitPrice: Double,
     val itemIds: List<UUID> = emptyList(),
+    val categoryId: UUID,
     val updatedBy: UUID
 )

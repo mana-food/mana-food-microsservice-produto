@@ -10,7 +10,7 @@ class GetAllCategoriesUseCase(
 ) {
 
     fun execute(query: GetAllCategoriesQuery): Paged<Category> {
-        val categoriesListFinded = categoryRepository.findAll(
+        val categoriesListFinded = categoryRepository.findPaged(
             page = query.page,
             pageSize = query.pageSize
         )

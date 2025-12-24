@@ -9,20 +9,21 @@ class DeleteCategoryUseCase(
 ) {
     fun execute(command: DeleteCategoryCommand) {
         val categoryFinded = categoryRepository.findById(command.id)
-            ?: throw IllegalArgumentException("$PREFIX Categoria não encontrada")
+        if(categoryFinded == null) {
+            logger.warn("$PREFIX Categoria com id ${command.id} não encontrada.")
+            throw IllegalArgumentException("$PREFIX Categoria com id ${command.id} não encontrada.")
+        }
 
         val deleted = categoryFinded.copy(
             deleted = true,
             updatedBy = command.deletedBy
         )
 
-        logger.debug("{} A categoria foi deletada com sucesso com o nome: {}", PREFIX, categoryFinded.name)
-
         try {
-            logger.debug("$PREFIX A categoria foi deletada com sucesso do name: ${categoryFinded.name}")
             categoryRepository.save(deleted)
+            logger.debug("$PREFIX A categoria foi deletada com sucesso: ${categoryFinded.name}")
         } catch (ex: DataAccessException) {
-            logger.error("$PREFIX Falha ao tentar criar a categoria com nome: ${categoryFinded.name}")
+            logger.error("$PREFIX Falha ao tentar deletar a categoria: ${categoryFinded.name}")
             throw Exception("$PREFIX Falha ao tentar deletar a categoria", ex)
         }
     }

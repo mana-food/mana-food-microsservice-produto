@@ -6,7 +6,7 @@ import java.util.*
 
 @Entity
 @Table(name = "category")
-class CategoryEntity(
+class CategoryJpaEntity(
 
     id: UUID,
 
@@ -14,10 +14,10 @@ class CategoryEntity(
     val name: String,
 
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-    val products: MutableList<ProductEntity> = mutableListOf(),
+    val products: MutableList<ProductJpaEntity> = mutableListOf(),
 
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-    val items: MutableList<ItemEntity> = mutableListOf(),
+    val items: MutableList<ItemJpaEntity> = mutableListOf(),
 
     createdAt: LocalDateTime,
     createdBy: UUID,
@@ -25,7 +25,7 @@ class CategoryEntity(
     updatedBy: UUID? = null,
     deleted: Boolean = false
 
-) : BaseEntity(
+) : BaseJpaEntity(
     id = id,
     createdAt = createdAt,
     createdBy = createdBy,

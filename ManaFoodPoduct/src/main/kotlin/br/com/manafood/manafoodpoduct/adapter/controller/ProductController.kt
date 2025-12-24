@@ -11,6 +11,7 @@ import br.com.manafood.manafoodpoduct.application.usecase.product.queries.getall
 import br.com.manafood.manafoodpoduct.application.usecase.product.queries.getall.GetAllProductsUseCase
 import br.com.manafood.manafoodpoduct.application.usecase.product.queries.getbyid.GetProductByIdQuery
 import br.com.manafood.manafoodpoduct.application.usecase.product.queries.getbyid.GetProductByIdUseCase
+import br.com.manafood.manafoodpoduct.domain.common.Paged
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -31,7 +32,6 @@ class ProductController(
     ): ResponseEntity<ProductResponse> {
 
         val createdBy = UUID.randomUUID()
-
         val command = ProductMapper.toCreateCommand(request, createdBy)
         val product = createProductUseCase.execute(command)
 
@@ -44,7 +44,6 @@ class ProductController(
     ): ResponseEntity<ProductResponse> {
 
         val updatedBy = UUID.randomUUID()
-
         val command = ProductMapper.toUpdateCommand(request, updatedBy)
         val product = updateProductUseCase.execute(command)
 
@@ -54,7 +53,6 @@ class ProductController(
     @DeleteMapping("/{id}")
     fun delete(@PathVariable id: UUID): ResponseEntity<Void> {
         val deletedBy = UUID.randomUUID()
-
         val command = ProductMapper.toDeleteCommand(id, deletedBy)
         deleteProductUseCase.execute(command)
 
@@ -64,18 +62,16 @@ class ProductController(
     @GetMapping("/{id}")
     fun getById(@PathVariable id: UUID): ResponseEntity<ProductResponse> {
         val product = getProductByIdUseCase.execute(GetProductByIdQuery(id))
-        return ResponseEntity.ok(ProductMapper.toResponse(product))
+        return if (product != null) ResponseEntity.ok(ProductMapper.toResponse(product)) else ResponseEntity.notFound()
+            .build()
     }
 
     @GetMapping
     fun getAll(
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "10") pageSize: Int
-    ): ResponseEntity<List<ProductResponse>> {
-
-        val products = getAllProductsUseCase
-            .execute(GetAllProductsQuery(page, pageSize))
-
-        return ResponseEntity.ok(products.map(ProductMapper::toResponse))
+    ): ResponseEntity<Paged<ProductResponse>> {
+        val products = getAllProductsUseCase.execute(GetAllProductsQuery(page, pageSize))
+        return ResponseEntity.ok(ProductMapper.toResponsePaged(products))
     }
 }

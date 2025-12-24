@@ -2,11 +2,14 @@ package br.com.manafood.manafoodpoduct.adapter.mapper
 
 import br.com.manafood.manafoodpoduct.adapter.request.commands.create.CreateItemRequest
 import br.com.manafood.manafoodpoduct.adapter.request.commands.update.UpdateItemRequest
+import br.com.manafood.manafoodpoduct.adapter.response.category.CategoryResponse
 import br.com.manafood.manafoodpoduct.adapter.response.common.CategorySummaryResponse
 import br.com.manafood.manafoodpoduct.adapter.response.item.ItemResponse
 import br.com.manafood.manafoodpoduct.application.usecase.item.commands.create.CreateItemCommand
 import br.com.manafood.manafoodpoduct.application.usecase.item.commands.delete.DeleteItemCommand
 import br.com.manafood.manafoodpoduct.application.usecase.item.commands.update.UpdateItemCommand
+import br.com.manafood.manafoodpoduct.domain.common.Paged
+import br.com.manafood.manafoodpoduct.domain.model.Category
 import br.com.manafood.manafoodpoduct.domain.model.Item
 import java.util.*
 
@@ -25,6 +28,7 @@ object ItemMapper {
             id = request.id,
             name = request.name,
             description = request.description,
+            categoryId = request.categoryId,
             updatedBy = updatedBy
         )
 
@@ -46,4 +50,15 @@ object ItemMapper {
             createdAt = item.createdAt,
             updatedAt = item.updatedAt
         )
+
+    fun toResponsePaged(itemPaged: Paged<Item>): Paged<ItemResponse> {
+        val itemResponses = itemPaged.items.map { toResponse(it) }
+        return Paged(
+            items = itemResponses,
+            page = itemPaged.page,
+            pageSize = itemPaged.pageSize,
+            totalItems = itemPaged.totalItems,
+            totalPages = itemPaged.totalPages
+        )
+    }
 }

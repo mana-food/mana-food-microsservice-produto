@@ -19,10 +19,11 @@ class UpdateCategoryUseCase(
         )
 
         try {
+            val categoryUpdated = categoryRepository.save(updated)
             logger.debug("$PREFIX A categoria foi atualizada com sucesso, foi atualizado de [${categoryFinded.name}] para [${command.name}]")
-            return categoryRepository.save(updated)
+            return categoryUpdated
         } catch (ex: DataAccessException) {
-            logger.error("$PREFIX Falha ao tentar atualizar a categoria com nome: ${command.name}")
+            logger.error("$PREFIX Falha ao tentar atualizar a categoria: ${command.name}")
             throw Exception("$PREFIX Erro ao atualizar entidade", ex)
         }
     }

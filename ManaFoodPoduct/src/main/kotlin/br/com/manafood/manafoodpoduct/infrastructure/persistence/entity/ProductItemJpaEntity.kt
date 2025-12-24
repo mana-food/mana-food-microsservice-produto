@@ -5,20 +5,18 @@ import java.time.LocalDateTime
 import java.util.*
 
 @Entity
-@Table(name = "item")
-class ItemEntity(
+@Table(name = "product_item")
+class ProductItemJpaEntity(
 
     id: UUID,
 
-    @Column(nullable = false)
-    val name: String,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", nullable = false)
+    val product: ProductJpaEntity,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", nullable = false)
-    val category: CategoryEntity,
-
-    @OneToMany(mappedBy = "item", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val products: MutableList<ProductItemEntity> = mutableListOf(),
+    @JoinColumn(name = "item_id", nullable = false)
+    val item: ItemJpaEntity,
 
     createdAt: LocalDateTime,
     createdBy: UUID,
@@ -26,7 +24,7 @@ class ItemEntity(
     updatedBy: UUID? = null,
     deleted: Boolean = false
 
-) : BaseEntity(
+) : BaseJpaEntity(
     id = id,
     createdAt = createdAt,
     createdBy = createdBy,

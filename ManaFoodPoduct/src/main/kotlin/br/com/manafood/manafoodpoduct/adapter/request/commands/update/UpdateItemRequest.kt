@@ -7,5 +7,6 @@ import java.util.*
 data class UpdateItemRequest(
     @field:NotNull val id: UUID,
     @field:NotBlank val name: String,
-    @field:NotBlank val description: String
+    @field:NotBlank val description: String,
+    @field:NotNull val categoryId: UUID
 )

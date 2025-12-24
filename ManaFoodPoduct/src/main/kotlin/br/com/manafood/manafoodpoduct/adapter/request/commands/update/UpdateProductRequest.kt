@@ -10,5 +10,6 @@ data class UpdateProductRequest(
     @field:NotBlank val name: String,
     val description: String?,
     @field:Positive val unitPrice: Double,
+    val categoryId: UUID,
     val itemIds: List<UUID> = emptyList()
 )

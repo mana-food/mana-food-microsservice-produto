@@ -2,7 +2,7 @@ package br.com.manafood.manafoodpoduct.application.usecase.category.commands.cre
 
 import br.com.manafood.manafoodpoduct.domain.model.Category
 import br.com.manafood.manafoodpoduct.domain.repository.CategoryRepository
-import jakarta.persistence.PersistenceException
+
 import org.slf4j.LoggerFactory
 import org.springframework.dao.DataAccessException
 import java.util.*
@@ -22,7 +22,7 @@ class CreateCategoryUseCase(
             logger.debug("$PREFIX A categoria foi criada com sucesso com name: ${command.name}")
             return categoryRepository.save(category)
         } catch (ex: DataAccessException) {
-            logger.error("$PREFIX Falha ao tentar criar a categoria com nome: ${command.name}")
+            logger.error("$PREFIX Falha ao tentar criar a categoria: ${command.name}")
             throw Exception("$PREFIX Falha ao tentar criar a categoria", ex)
         }
     }

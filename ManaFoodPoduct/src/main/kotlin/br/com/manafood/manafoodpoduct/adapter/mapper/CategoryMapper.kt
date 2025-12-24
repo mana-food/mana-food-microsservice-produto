@@ -6,6 +6,7 @@ import br.com.manafood.manafoodpoduct.adapter.response.category.CategoryResponse
 import br.com.manafood.manafoodpoduct.application.usecase.category.commands.create.CreateCategoryCommand
 import br.com.manafood.manafoodpoduct.application.usecase.category.commands.delete.DeleteCategoryCommand
 import br.com.manafood.manafoodpoduct.application.usecase.category.commands.update.UpdateCategoryCommand
+import br.com.manafood.manafoodpoduct.domain.common.Paged
 import br.com.manafood.manafoodpoduct.domain.model.Category
 import java.util.*
 
@@ -13,7 +14,6 @@ object CategoryMapper {
     fun toCreateCommand(request: CreateCategoryRequest, createdBy: UUID) =
         CreateCategoryCommand(
             name = request.name,
-            description = request.description,
             createdBy = createdBy
         )
 
@@ -39,4 +39,14 @@ object CategoryMapper {
             updatedAt = category.updatedAt
         )
 
+    fun toResponsePaged(catehoriesPaged: Paged<Category>): Paged<CategoryResponse> {
+        val categoryResponses = catehoriesPaged.items.map { toResponse(it) }
+        return Paged(
+            items = categoryResponses,
+            page = catehoriesPaged.page,
+            pageSize = catehoriesPaged.pageSize,
+            totalItems = catehoriesPaged.totalItems,
+            totalPages = catehoriesPaged.totalPages
+        )
+    }
 }

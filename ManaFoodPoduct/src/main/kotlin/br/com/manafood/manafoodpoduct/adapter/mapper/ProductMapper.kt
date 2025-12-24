@@ -7,6 +7,7 @@ import br.com.manafood.manafoodpoduct.adapter.response.product.ProductResponse
 import br.com.manafood.manafoodpoduct.application.usecase.product.commands.create.CreateProductCommand
 import br.com.manafood.manafoodpoduct.application.usecase.product.commands.delete.DeleteProductCommand
 import br.com.manafood.manafoodpoduct.application.usecase.product.commands.update.UpdateProductCommand
+import br.com.manafood.manafoodpoduct.domain.common.Paged
 import br.com.manafood.manafoodpoduct.domain.model.Product
 import java.util.*
 
@@ -28,6 +29,7 @@ object ProductMapper {
             description = request.description,
             unitPrice = request.unitPrice,
             itemIds = request.itemIds,
+            categoryId = request.categoryId,
             updatedBy = updatedBy
         )
 
@@ -47,4 +49,15 @@ object ProductMapper {
             createdAt = product.createdAt,
             updatedAt = product.updatedAt
         )
+
+    fun toResponsePaged(productPaged: Paged<Product>): Paged<ProductResponse> {
+        val productResponses = productPaged.items.map { toResponse(it) }
+        return Paged(
+            items = productResponses,
+            page = productPaged.page,
+            pageSize = productPaged.pageSize,
+            totalItems = productPaged.totalItems,
+            totalPages = productPaged.totalPages
+        )
+    }
 }

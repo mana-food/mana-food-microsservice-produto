@@ -6,5 +6,6 @@ data class UpdateItemCommand(
     val id: UUID,
     val name: String,
     val description: String,
+    val categoryId: UUID,
     val updatedBy: UUID
 )

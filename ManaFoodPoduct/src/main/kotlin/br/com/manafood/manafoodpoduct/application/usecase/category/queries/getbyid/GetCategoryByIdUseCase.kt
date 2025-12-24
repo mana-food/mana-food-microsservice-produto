@@ -12,10 +12,10 @@ class GetCategoryByIdUseCase(
     fun execute(query: GetCategoryByIdQuery): Category? {
         try {
             val categoryFinded = categoryRepository.findById(query.id)
-            if (categoryFinded == null) {
+            if (categoryFinded != null) {
                 logger.debug(
                     "{} Categoria encontrada - nome: {}",
-                    PREFIX, categoryFinded?.name
+                    PREFIX, categoryFinded.name
                 )
             } else {
                 logger.debug("{} Categoria não encontrada com id: {}", PREFIX, query.id)

@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 import java.util.*
 
 @MappedSuperclass
-abstract class BaseEntity(
+abstract class BaseJpaEntity(
 
     @Id
     @Column(nullable = false, updatable = false)

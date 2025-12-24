@@ -11,6 +11,7 @@ import br.com.manafood.manafoodpoduct.application.usecase.category.queries.getal
 import br.com.manafood.manafoodpoduct.application.usecase.category.queries.getall.GetAllCategoriesUseCase
 import br.com.manafood.manafoodpoduct.application.usecase.category.queries.getbyid.GetCategoryByIdQuery
 import br.com.manafood.manafoodpoduct.application.usecase.category.queries.getbyid.GetCategoryByIdUseCase
+import br.com.manafood.manafoodpoduct.domain.common.Paged
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -29,9 +30,7 @@ class CategoryController(
     fun create(
         @RequestBody request: CreateCategoryRequest
     ): ResponseEntity<CategoryResponse> {
-
         val createdBy = UUID.randomUUID()
-
         val command = CategoryMapper.toCreateCommand(request, createdBy)
         val category = createCategoryUseCase.execute(command)
 
@@ -39,12 +38,10 @@ class CategoryController(
     }
 
     @PutMapping
-    suspend fun update(
+    fun update(
         @RequestBody request: UpdateCategoryRequest
     ): ResponseEntity<CategoryResponse> {
-
         val updatedBy = UUID.randomUUID()
-
         val command = CategoryMapper.toUpdateCommand(request, updatedBy)
         val category = updateCategoryUseCase.execute(command)
 
@@ -54,7 +51,6 @@ class CategoryController(
     @DeleteMapping("/{id}")
     fun delete(@PathVariable id: UUID): ResponseEntity<Void> {
         val deletedBy = UUID.randomUUID()
-
         val command = CategoryMapper.toDeleteCommand(id, deletedBy)
         deleteCategoryUseCase.execute(command)
 
@@ -72,11 +68,8 @@ class CategoryController(
     fun getAll(
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "10") pageSize: Int
-    ): ResponseEntity<List<CategoryResponse>> {
-
-        val categories = getAllCategoriesUseCase
-            .execute(GetAllCategoriesQuery(page, pageSize))
-
-        return ResponseEntity.ok(categories.map(CategoryMapper::toResponse))
+    ): ResponseEntity<Paged<CategoryResponse>> {
+        val categories = getAllCategoriesUseCase.execute(GetAllCategoriesQuery(page, pageSize))
+        return ResponseEntity.ok(CategoryMapper.toResponsePaged(categories))
     }
 }

@@ -1,13 +1,12 @@
 package br.com.manafood.manafoodpoduct.infrastructure.persistence.entity
 
 import jakarta.persistence.*
-import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.util.*
 
 @Entity
 @Table(name = "product")
-class ProductEntity(
+class ProductJpaEntity(
 
     id: UUID,
 
@@ -18,14 +17,14 @@ class ProductEntity(
     val description: String? = null,
 
     @Column(nullable = false)
-    val unitPrice: BigDecimal,
+    val unitPrice: Double,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
-    val category: CategoryEntity,
+    val category: CategoryJpaEntity,
 
     @OneToMany(mappedBy = "product", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val items: MutableList<ItemEntity> = mutableListOf(),
+    val items: MutableList<ItemJpaEntity> = mutableListOf(),
 
     createdAt: LocalDateTime,
     createdBy: UUID,
@@ -33,7 +32,7 @@ class ProductEntity(
     updatedBy: UUID? = null,
     deleted: Boolean = false
 
-) : BaseEntity(
+) : BaseJpaEntity(
     id = id,
     createdAt = createdAt,
     createdBy = createdBy,

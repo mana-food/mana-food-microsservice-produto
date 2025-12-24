@@ -1,18 +1,17 @@
-package br.com.manafood.manafoodpoduct.infrastructure.persistence.repository
+package br.com.manafood.manafoodpoduct.infrastructure.persistence.adapter
 
 import br.com.manafood.manafoodpoduct.domain.common.Paged
 import br.com.manafood.manafoodpoduct.domain.model.Category
 import br.com.manafood.manafoodpoduct.domain.repository.CategoryRepository
 import br.com.manafood.manafoodpoduct.infrastructure.persistence.mapper.CategoryEntityMapper
-import br.com.manafood.manafoodpoduct.infrastructure.persistence.mapper.CategoryEntityMapper.toPagedDomain
-import br.com.manafood.manafoodpoduct.infrastructure.persistence.repository.spring.SpringCategoryJpaRepository
+import br.com.manafood.manafoodpoduct.infrastructure.persistence.repository.CategoryJpaRepository
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
-class CategoryJpaRepositoryImpl(
-    private val springDataRepository: SpringCategoryJpaRepository
+class CategoryJpaRepositoryAdapter(
+    private val springDataRepository: CategoryJpaRepository
 ) : CategoryRepository {
 
     override fun findPaged(

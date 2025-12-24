@@ -3,12 +3,12 @@ package br.com.manafood.manafoodpoduct.infrastructure.config
 import br.com.manafood.manafoodpoduct.domain.repository.CategoryRepository
 import br.com.manafood.manafoodpoduct.domain.repository.ItemRepository
 import br.com.manafood.manafoodpoduct.domain.repository.ProductRepository
-import br.com.manafood.manafoodpoduct.infrastructure.persistence.repository.CategoryJpaRepositoryImpl
-import br.com.manafood.manafoodpoduct.infrastructure.persistence.repository.ItemJpaRepositoryImpl
-import br.com.manafood.manafoodpoduct.infrastructure.persistence.repository.ProductJpaRepositoryImpl
-import br.com.manafood.manafoodpoduct.infrastructure.persistence.repository.spring.SpringCategoryJpaRepository
-import br.com.manafood.manafoodpoduct.infrastructure.persistence.repository.spring.SpringItemJpaRepository
-import br.com.manafood.manafoodpoduct.infrastructure.persistence.repository.spring.SpringProductJpaRepository
+import br.com.manafood.manafoodpoduct.infrastructure.persistence.adapter.CategoryJpaRepositoryAdapter
+import br.com.manafood.manafoodpoduct.infrastructure.persistence.adapter.ItemJpaRepositoryAdapter
+import br.com.manafood.manafoodpoduct.infrastructure.persistence.adapter.ProductJpaRepositoryAdapter
+import br.com.manafood.manafoodpoduct.infrastructure.persistence.repository.CategoryJpaRepository
+import br.com.manafood.manafoodpoduct.infrastructure.persistence.repository.ItemJpaRepository
+import br.com.manafood.manafoodpoduct.infrastructure.persistence.repository.ProductJpaRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -17,16 +17,16 @@ class RepositoryConfig {
 
     @Bean
     fun productRepository(
-        springRepo: SpringProductJpaRepository
-    ): ProductRepository = ProductJpaRepositoryImpl(springRepo)
+        springRepo: ProductJpaRepository
+    ): ProductRepository = ProductJpaRepositoryAdapter(springRepo)
 
     @Bean
     fun itemRepository(
-        springRepo: SpringItemJpaRepository
-    ): ItemRepository = ItemJpaRepositoryImpl(springRepo)
+        springRepo: ItemJpaRepository
+    ): ItemRepository = ItemJpaRepositoryAdapter(springRepo)
 
     @Bean
     fun categoryRepository(
-        springRepo: SpringCategoryJpaRepository
-    ): CategoryRepository = CategoryJpaRepositoryImpl(springRepo)
+        springRepo: CategoryJpaRepository
+    ): CategoryRepository = CategoryJpaRepositoryAdapter(springRepo)
 }

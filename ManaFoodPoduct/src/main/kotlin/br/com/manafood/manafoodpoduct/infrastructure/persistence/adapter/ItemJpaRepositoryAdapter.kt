@@ -1,17 +1,17 @@
-package br.com.manafood.manafoodpoduct.infrastructure.persistence.repository
+package br.com.manafood.manafoodpoduct.infrastructure.persistence.adapter
 
 import br.com.manafood.manafoodpoduct.domain.common.Paged
 import br.com.manafood.manafoodpoduct.domain.model.Item
 import br.com.manafood.manafoodpoduct.domain.repository.ItemRepository
 import br.com.manafood.manafoodpoduct.infrastructure.persistence.mapper.ItemEntityMapper
-import br.com.manafood.manafoodpoduct.infrastructure.persistence.repository.spring.SpringItemJpaRepository
+import br.com.manafood.manafoodpoduct.infrastructure.persistence.repository.ItemJpaRepository
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
-class ItemJpaRepositoryImpl(
-    private val springDataRepository: SpringItemJpaRepository
+class ItemJpaRepositoryAdapter(
+    private val springDataRepository: ItemJpaRepository
 ) : ItemRepository {
 
     override fun findPaged(

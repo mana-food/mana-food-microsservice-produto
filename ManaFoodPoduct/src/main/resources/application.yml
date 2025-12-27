@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: ManaFoodPoduct
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/manafood?useSSL=false&serverTimezone=UTC
+    username: root
+    password: root
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect

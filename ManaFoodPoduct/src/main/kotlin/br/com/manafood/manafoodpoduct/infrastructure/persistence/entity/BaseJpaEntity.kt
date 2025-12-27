@@ -10,7 +10,7 @@ import java.util.*
 abstract class BaseJpaEntity(
 
     @Id
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false, length = 36)
     val id: UUID,
 
     @Column(nullable = false, updatable = false)

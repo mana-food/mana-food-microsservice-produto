@@ -14,7 +14,7 @@ class CategoryJpaEntity(
     val name: String,
 
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-    val products: MutableList<ProductJpaEntity> = mutableListOf(),
+    var products: MutableList<ProductJpaEntity> = mutableListOf(),
 
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     val items: MutableList<ItemJpaEntity> = mutableListOf(),

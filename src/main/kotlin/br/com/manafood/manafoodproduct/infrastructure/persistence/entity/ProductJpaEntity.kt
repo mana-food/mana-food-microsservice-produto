@@ -1,6 +1,7 @@
 package br.com.manafood.manafoodproduct.infrastructure.persistence.entity
 
 import jakarta.persistence.*
+import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.util.*
 
@@ -16,8 +17,8 @@ class ProductJpaEntity(
     @Column
     val description: String? = null,
 
-    @Column(nullable = false)
-    val unitPrice: Double,
+    @Column(nullable = false, precision = 10, scale = 2)
+    val unitPrice: BigDecimal,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)

@@ -1,6 +1,7 @@
 package br.com.manafood.manafoodproduct.domain.model
 
 import br.com.manafood.manafoodproduct.domain.common.BaseEntity
+import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -13,7 +14,7 @@ data class Product(
     override val deleted: Boolean = false,
     val name: String,
     val description: String,
-    val unitPrice: Double,
+    val unitPrice: BigDecimal,
     val categoryId: UUID,
     val category: Category,
     val items: MutableList<Item> = mutableListOf()

@@ -6,6 +6,7 @@ import br.com.manafood.manafoodproduct.domain.model.Product
 import br.com.manafood.manafoodproduct.infrastructure.persistence.entity.CategoryJpaEntity
 import br.com.manafood.manafoodproduct.infrastructure.persistence.entity.ItemJpaEntity
 import br.com.manafood.manafoodproduct.infrastructure.persistence.entity.ProductJpaEntity
+import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.util.*
 
@@ -46,7 +47,7 @@ object Fixtures {
             deleted = false,
             name = "Produto A",
             description = "Descricao",
-            unitPrice = 10.0,
+            unitPrice = BigDecimal("10.0"),
             categoryId = UUID.randomUUID(),
             category = sampleCategory(),
             items = mutableListOf(sampleItem())
@@ -83,7 +84,7 @@ object Fixtures {
             id = id,
             name = "Produto A",
             description = "Descricao",
-            unitPrice = 10.0,
+            unitPrice = BigDecimal("10.00"),
             category = sampleCategoryJpaEntity(),
             productItems = mutableListOf(),
             createdAt = LocalDateTime.now(),

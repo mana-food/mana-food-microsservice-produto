@@ -22,6 +22,7 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
+import java.math.BigDecimal
 import java.util.*
 
 @WebMvcTest(ProductController::class)
@@ -49,7 +50,7 @@ class ProductControllerTest(@Autowired val mockMvc: MockMvc) {
         val request = CreateProductRequest(
             name = "Produto X",
             description = "Desc",
-            unitPrice = 10.0,
+            unitPrice = BigDecimal("10.0"),
             categoryId = UUID.randomUUID(),
             itemIds = emptyList()
         )
@@ -72,7 +73,7 @@ class ProductControllerTest(@Autowired val mockMvc: MockMvc) {
         val request = CreateProductRequest(
             name = "Premium Product",
             description = "High quality product",
-            unitPrice = 150.50,
+            unitPrice = BigDecimal("150.50"),
             categoryId = UUID.randomUUID(),
             itemIds = listOf(UUID.randomUUID())
         )
@@ -99,7 +100,7 @@ class ProductControllerTest(@Autowired val mockMvc: MockMvc) {
             id = productId,
             name = "Updated Product",
             description = "Updated Description",
-            unitPrice = 200.0,
+            unitPrice = BigDecimal("200.0"),
             categoryId = UUID.randomUUID(),
             itemIds = emptyList()
         )

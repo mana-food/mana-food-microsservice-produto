@@ -9,6 +9,7 @@ import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
+import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.util.*
 import kotlin.test.assertEquals
@@ -34,7 +35,7 @@ class ProductJpaRepositoryAdapterTest {
             id = UUID.randomUUID(),
             name = "Product X",
             description = "Description",
-            unitPrice = 100.0,
+            unitPrice = BigDecimal("100.0"),
             category = categoryJpa,
             productItems = mutableListOf(),
             createdAt = LocalDateTime.now(),
@@ -81,7 +82,7 @@ class ProductJpaRepositoryAdapterTest {
             id = UUID.randomUUID(),
             name = "Product X",
             description = "Description",
-            unitPrice = 100.0,
+            unitPrice = BigDecimal("100.0"),
             category = categoryJpa,
             productItems = mutableListOf(),
             createdAt = LocalDateTime.now(),
@@ -116,7 +117,7 @@ class ProductJpaRepositoryAdapterTest {
             id = UUID.randomUUID(),
             name = "Product",
             description = "Desc",
-            unitPrice = 100.0,
+            unitPrice = BigDecimal("100.00"),
             category = category,
             categoryId = category.id!!,
             items = mutableListOf(),

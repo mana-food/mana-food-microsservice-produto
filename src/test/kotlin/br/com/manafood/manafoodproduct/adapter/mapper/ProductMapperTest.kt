@@ -1,6 +1,7 @@
 package br.com.manafood.manafoodproduct.adapter.mapper
 
 import br.com.manafood.manafoodproduct.testutil.Fixtures
+import java.math.BigDecimal
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -28,7 +29,7 @@ class ProductMapperTest {
         val request = br.com.manafood.manafoodproduct.adapter.request.commands.create.CreateProductRequest(
             name = "Produto X",
             description = "Desc",
-            unitPrice = 12.5,
+            unitPrice = BigDecimal("12.5"),
             categoryId = UUID.randomUUID(),
             itemIds = emptyList()
         )

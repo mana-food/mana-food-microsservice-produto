@@ -11,6 +11,7 @@ import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.dao.DataAccessException
+import java.math.BigDecimal
 import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -29,12 +30,12 @@ class UpdateProductUseCaseTest {
         val category = Fixtures.sampleCategory()
         val item = Fixtures.sampleItem()
         val command = UpdateProductCommand(
-            id = existingProduct.id!!,
+            id = existingProduct.id,
             name = "Updated Product",
             description = "Updated Description",
-            unitPrice = 150.0,
-            categoryId = category.id!!,
-            itemIds = listOf(item.id!!),
+            unitPrice = BigDecimal("150.0"),
+            categoryId = category.id,
+            itemIds = listOf(item.id),
             updatedBy = UUID.randomUUID()
         )
 
@@ -74,11 +75,11 @@ class UpdateProductUseCaseTest {
         val existingProduct = Fixtures.sampleProduct()
         val category = Fixtures.sampleCategory()
         val command = UpdateProductCommand(
-            id = existingProduct.id!!,
+            id = existingProduct.id,
             name = "Updated Product",
             description = "Updated Description",
-            unitPrice = 150.0,
-            categoryId = category.id!!,
+            unitPrice = BigDecimal("150.0"),
+            categoryId = category.id,
             itemIds = emptyList(),
             updatedBy = UUID.randomUUID()
         )
@@ -112,7 +113,7 @@ class UpdateProductUseCaseTest {
             id = UUID.randomUUID(),
             name = "Updated Product",
             description = "Updated Description",
-            unitPrice = 150.0,
+            unitPrice = BigDecimal("150.0"),
             categoryId = UUID.randomUUID(),
             itemIds = emptyList(),
             updatedBy = UUID.randomUUID()
@@ -136,10 +137,10 @@ class UpdateProductUseCaseTest {
         // Given
         val existingProduct = Fixtures.sampleProduct()
         val command = UpdateProductCommand(
-            id = existingProduct.id!!,
+            id = existingProduct.id,
             name = "Updated Product",
             description = "Updated Description",
-            unitPrice = 150.0,
+            unitPrice = BigDecimal("150.00"),
             categoryId = UUID.randomUUID(),
             itemIds = emptyList(),
             updatedBy = UUID.randomUUID()
@@ -166,12 +167,12 @@ class UpdateProductUseCaseTest {
         val category = Fixtures.sampleCategory()
         val item = Fixtures.sampleItem()
         val command = UpdateProductCommand(
-            id = existingProduct.id!!,
+            id = existingProduct.id,
             name = "Updated Product",
             description = "Updated Description",
-            unitPrice = 150.0,
-            categoryId = category.id!!,
-            itemIds = listOf(item.id!!),
+            unitPrice = BigDecimal("150.0"),
+            categoryId = category.id,
+            itemIds = listOf(item.id),
             updatedBy = UUID.randomUUID()
         )
 

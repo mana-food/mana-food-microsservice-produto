@@ -30,7 +30,14 @@
 		<kotlin.version>1.9.24</kotlin.version>
 		<java.version>17</java.version>
 		<mockk.version>1.13.13</mockk.version>
+		<cucumber.version>7.18.1</cucumber.version>
+		<testcontainers.version>1.19.3</testcontainers.version>
+
+		<!-- SonarQube Properties -->
 		<sonar.organization>mana-food</sonar.organization>
+		<sonar.projectKey>mana-food_mana-food-microsservice-produto</sonar.projectKey>
+		<sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+		<sonar.exclusions>**/target/**,**/*.class</sonar.exclusions>
 	</properties>
 	<dependencies>
 
@@ -193,6 +200,35 @@
 				<configuration>
 					<useModulePath>false</useModulePath>
 				</configuration>
+			</plugin>
+
+			<!-- JaCoCo Plugin para Cobertura de Código -->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.11</version>
+				<executions>
+					<execution>
+						<id>prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- SonarQube Scanner Plugin -->
+			<plugin>
+				<groupId>org.sonarsource.scanner.maven</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>4.0.0.4121</version>
 			</plugin>
 
 		</plugins>

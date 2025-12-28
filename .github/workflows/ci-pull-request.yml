@@ -62,14 +62,11 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         run: |
-          # Executa build + testes (já foram executados no job anterior, mas garantir artefatos/relatórios)
-          mvn -B -ntp -DskipTests=false clean verify
-          # Executa a análise Sonar via plugin Maven
-          mvn -B -ntp sonar:sonar \
-            -Dsonar.host.url="$SONAR_HOST_URL" \
-            -Dsonar.login="$SONAR_TOKEN" \
-            -Dsonar.projectKey="mana-food_mana-food-microsservice-produto" \
-            -Dsonar.organization="mana-food" \
-            -Dsonar.branch.name="${{ github.head_ref }}" \
-            -Dsonar.exclusions="**/target/**,**/*.class" \
-            -Dsonar.coverage.jacoco.xmlReportPaths="target/site/jacoco/jacoco.xml"
+          # Executa build + testes com cobertura JaCoCo
+          mvn -B -ntp clean verify
+          
+          # Executa a análise Sonar via plugin Maven (usa propriedades do pom.xml)
+            mvn -B -ntp sonar:sonar \
+              -Dsonar.host.url="$SONAR_HOST_URL" \
+              -Dsonar.login="$SONAR_TOKEN" \
+              -Dsonar.branch.name="${{ github.head_ref }}"

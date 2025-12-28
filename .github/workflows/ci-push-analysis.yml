@@ -2,28 +2,25 @@
 on:
   push:
     branches-ignore:
-      - main   # ignora pushes na main, só roda nas outras branches
+      - main
 
 jobs:
-  # Steps: Build, Testes e verificação de cobertura de código
   analise-de-pushes:
-
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout código
         uses: actions/checkout@v4
 
-      - name: Configurar .NET
-        uses: actions/setup-dotnet@v4
+      - name: Configurar JDK (Temurin 17) e cache Maven
+        uses: actions/setup-java@v4
         with:
-          dotnet-version: 9.0.x
+          distribution: temurin
+          java-version: '17'
+          cache: 'maven'
 
-      - name: Restaurar dependências
-        run: dotnet restore
+      - name: Restaurar dependências (go-offline)
+        run: mvn -B -ntp dependency:go-offline -DskipTests
 
-      - name: Build
-        run: dotnet build --configuration Release --no-restore
-
-      - name: Rodar Testes
-        run: dotnet test --configuration Release --no-build --verbosity normal
+      - name: Build e Rodar Testes
+        run: mvn -B -ntp clean verify

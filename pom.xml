@@ -30,6 +30,7 @@
 		<kotlin.version>1.9.24</kotlin.version>
 		<java.version>17</java.version>
 		<mockk.version>1.13.13</mockk.version>
+		<sonar.organization>mana-food</sonar.organization>
 	</properties>
 	<dependencies>
 

@@ -1,21 +1,21 @@
 # Etapa 1 -> Base (Runtime)
-FROM eclipse-temurin:21-jre-alpine AS base
+FROM eclipse-temurin:17-jre-alpine AS base
 WORKDIR /app
 EXPOSE 8080
 
-# Etapa 2 -> Build
-FROM eclipse-temurin:21-jdk-alpine AS build
+# Etapa 2 -> Build com Maven
+FROM maven:3.9.6-eclipse-temurin-17-alpine AS build
 WORKDIR /src
 
 # Copia apenas o pom para aproveitar cache
 COPY pom.xml .
-RUN mvn dependency:go-offline
+RUN mvn dependency:go-offline -B
 
 # Copia o código
 COPY src ./src
 
 # Gera o jar
-RUN mvn clean package -DskipTests
+RUN mvn clean package -DskipTests -B
 
 # Etapa 3 -> Final
 FROM base AS final

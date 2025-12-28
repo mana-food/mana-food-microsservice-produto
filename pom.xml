@@ -90,19 +90,25 @@
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 
-		<!-- MockK para Kotlin (antes do spring-boot-starter-test) -->
-		<dependency>
-			<groupId>io.mockk</groupId>
-			<artifactId>mockk-jvm</artifactId>
-			<version>${mockk.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.mockk</groupId>
-			<artifactId>mockk-agent-jvm</artifactId>
-			<version>${mockk.version}</version>
-			<scope>test</scope>
-		</dependency>
+	<!-- MockK para Kotlin (antes do spring-boot-starter-test) -->
+	<dependency>
+		<groupId>io.mockk</groupId>
+		<artifactId>mockk-jvm</artifactId>
+		<version>${mockk.version}</version>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>io.mockk</groupId>
+		<artifactId>mockk-agent-jvm</artifactId>
+		<version>${mockk.version}</version>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>com.ninja-squad</groupId>
+		<artifactId>springmockk</artifactId>
+		<version>4.0.2</version>
+		<scope>test</scope>
+	</dependency>
 
 		<!-- Spring Boot Test (sem Mockito para evitar conflitos) -->
 		<dependency>

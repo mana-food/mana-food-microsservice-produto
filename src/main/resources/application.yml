@@ -1,6 +1,6 @@
 spring:
   application:
-    name: ManaFoodPoduct
+    name: manafoodproduct
 
   datasource:
     url: ${SPRING_DATASOURCE_URL}

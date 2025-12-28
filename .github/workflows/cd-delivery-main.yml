@@ -120,7 +120,7 @@ jobs:
           # Atualize este caminho para o Dockerfile do seu serviço Kotlin (ex.: ./Dockerfile ou ./app/Dockerfile)
           file: ./Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

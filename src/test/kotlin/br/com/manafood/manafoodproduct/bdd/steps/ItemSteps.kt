@@ -295,5 +295,20 @@ class ItemSteps : CucumberSpringConfiguration() {
             "Nome da categoria do item não corresponde"
         )
     }
+
+    @Então("o status da resposta deve ser {int} [item]")
+    fun `o status da resposta deve ser`(statusEsperado: Int) {
+        assertNotNull(response, "Resposta não foi recebida")
+        assertEquals(statusEsperado, response?.statusCode?.value(), "Status da resposta não corresponde")
+    }
+
+    @Então("o status da resposta deve ser {int} ou {int} [item]")
+    fun `o status da resposta deve ser ou`(status1: Int, status2: Int) {
+        val statusCode = response?.statusCode?.value()
+        assertTrue(
+            statusCode == status1 || statusCode == status2,
+            "Status da resposta deveria ser $status1 ou $status2, mas foi $statusCode"
+        )
+    }
 }
 

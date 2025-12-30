@@ -87,9 +87,9 @@ class ProductSteps : CucumberSpringConfiguration() {
         val request = CreateProductRequest(
             name = nome,
             description = descricao,
-            unitPrice = BigDecimal("preco"),
+            unitPrice = BigDecimal("$preco"),
             categoryId = categoryId!!,
-            itemIds = itemIds.take(2) // Usar 2 itens
+            itemIds = itemIds.take(2)
         )
 
         response = restTemplate.postForEntity(url, request, ProductResponse::class.java)
@@ -183,7 +183,7 @@ class ProductSteps : CucumberSpringConfiguration() {
     }
 
     @Quando("eu atualizar o produto com nome {string} e preço {double}")
-    fun `eu atualizar o produto com nome e preço`(novoNome: String, novoPreco: BigDecimal) {
+    fun `eu atualizar o produto com nome e preço`(novoNome: String, novoPreco: Double) {
         assertNotNull(productId, "ID do produto não está disponível")
         assertNotNull(categoryId, "ID da categoria não está disponível")
 
@@ -192,7 +192,7 @@ class ProductSteps : CucumberSpringConfiguration() {
             id = productId!!,
             name = novoNome,
             description = "Produto atualizado",
-            unitPrice = novoPreco,
+            unitPrice = BigDecimal("$novoPreco"),
             categoryId = categoryId!!,
             itemIds = itemIds.take(1)
         )
@@ -295,7 +295,13 @@ class ProductSteps : CucumberSpringConfiguration() {
         )
     }
 
-    @Então("o status da resposta deve ser {int} ou {int}")
+    @Então("o status da resposta deve ser {int} [product]")
+    fun `o status da resposta deve ser`(statusEsperado: Int) {
+        assertNotNull(response, "Resposta não foi recebida")
+        assertEquals(statusEsperado, response?.statusCode?.value(), "Status da resposta não corresponde")
+    }
+
+    @Então("o status da resposta deve ser {int} ou {int} [product]")
     fun `o status da resposta deve ser ou`(status1: Int, status2: Int) {
         val statusCode = response?.statusCode?.value()
         assertTrue(
@@ -303,5 +309,6 @@ class ProductSteps : CucumberSpringConfiguration() {
             "Status da resposta deveria ser $status1 ou $status2, mas foi $statusCode"
         )
     }
+
 }
 

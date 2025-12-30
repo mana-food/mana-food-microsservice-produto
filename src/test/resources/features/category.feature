@@ -33,10 +33,10 @@ Funcionalidade: Gerenciamento de Categorias
   @category
   Cenário: Listar todas as categorias
     Dado que existem as seguintes categorias:
-      | nome          |
-      | Bebidas       |
-      | Alimentos     |
-      | Sobremesas    |
+      | nome                                          |
+      | Bebidas (Água, Sucos e Refri)                 |
+      | Alimentos (Lanches, Acompanhamentos e Molhos) |
+      | Sobremesas                                    |
     Quando eu listar todas as categorias
     Então devo receber uma lista com 3 categorias
     E o status da resposta deve ser 200

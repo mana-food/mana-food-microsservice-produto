@@ -27,25 +27,6 @@ class CategorySteps : CucumberSpringConfiguration() {
     private var categoryId: UUID? = null
     private var categoryResponse: CategoryResponse? = null
 
-    @Dado("que o sistema está disponível")
-    fun `que o sistema está disponível`() {
-        val url = "${getBaseUrl()}/actuator/health"
-        try {
-            val healthResponse = restTemplate.getForEntity(url, String::class.java)
-            assertTrue(healthResponse.statusCode.is2xxSuccessful, "Sistema não está disponível")
-        } catch (e: Exception) {
-            // Sistema ainda não está pronto, vamos aguardar
-            Thread.sleep(2000)
-        }
-    }
-
-    @Dado("o banco de dados está limpo")
-    fun `o banco de dados está limpo`() {
-        // O Testcontainer recria o banco para cada teste
-        // Flyway garante que as migrações estão aplicadas
-        assertTrue(true)
-    }
-
     @Quando("eu criar uma categoria com nome {string}")
     fun `eu criar uma categoria com nome`(nome: String) {
         val url = "${getBaseUrl()}/categories"

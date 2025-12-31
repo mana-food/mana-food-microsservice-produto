@@ -3,9 +3,9 @@ spring:
     name: manafoodproduct
 
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3307/db_manafood_product?useSSL=false&allowPublicKeyRetrieval=true}
-    username: ${SPRING_DATASOURCE_USERNAME:root}
-    password: ${SPRING_DATASOURCE_PASSWORD:senha123}
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   flyway:
@@ -22,9 +22,10 @@ spring:
 
 logging:
   level:
-    org.springframework.web: DEBUG
-    org.hibernate.SQL: DEBUG
-    br.com.manafood: DEBUG
+    root: ${LOGGING_LEVEL_ROOT:INFO}
+    org.springframework.web: ${LOGGING_LEVEL_SPRING:INFO}
+    org.hibernate.SQL: ${LOGGING_LEVEL_SQL:INFO}
+    br.com.manafood: ${LOGGING_LEVEL_MANAFOOD:DEBUG}
 
 management:
   endpoints:
@@ -34,3 +35,4 @@ management:
   endpoint:
     health:
       show-details: always
+

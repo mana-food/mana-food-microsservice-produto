@@ -11,6 +11,7 @@ import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.dao.DataAccessException
+import java.math.BigDecimal
 import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -30,9 +31,9 @@ class CreateProductUseCaseTest {
         val command = CreateProductCommand(
             name = "New Product",
             description = "Description",
-            unitPrice = 100.0,
-            categoryId = category.id!!,
-            itemIds = listOf(item.id!!),
+            unitPrice = BigDecimal("100.0"),
+            categoryId = category.id,
+            itemIds = listOf(item.id),
             createdBy = UUID.randomUUID()
         )
 
@@ -65,7 +66,7 @@ class CreateProductUseCaseTest {
         val command = CreateProductCommand(
             name = "New Product",
             description = "Description",
-            unitPrice = 100.0,
+            unitPrice = BigDecimal("100.0"),
             categoryId = UUID.randomUUID(),
             itemIds = listOf(UUID.randomUUID()),
             createdBy = UUID.randomUUID()
@@ -91,8 +92,8 @@ class CreateProductUseCaseTest {
         val command = CreateProductCommand(
             name = "New Product",
             description = "Description",
-            unitPrice = 100.0,
-            categoryId = category.id!!,
+            unitPrice = BigDecimal("100.0"),
+            categoryId = category.id,
             itemIds = listOf(UUID.randomUUID()),
             createdBy = UUID.randomUUID()
         )
@@ -119,9 +120,9 @@ class CreateProductUseCaseTest {
         val command = CreateProductCommand(
             name = "New Product",
             description = "Description",
-            unitPrice = 100.0,
-            categoryId = category.id!!,
-            itemIds = listOf(item.id!!),
+            unitPrice = BigDecimal("100.0"),
+            categoryId = category.id,
+            itemIds = listOf(item.id),
             createdBy = UUID.randomUUID()
         )
 

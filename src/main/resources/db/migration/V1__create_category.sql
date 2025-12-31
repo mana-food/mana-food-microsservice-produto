@@ -1,10 +1,10 @@
 CREATE TABLE category
 (
-    id         CHAR(36) PRIMARY KEY,
-    name       VARCHAR(255) NOT NULL UNIQUE,
+    id         BINARY(16) PRIMARY KEY,
+    name       VARCHAR(255) NOT NULL,
     created_at DATETIME     NOT NULL,
-    created_by CHAR(36)     NOT NULL,
+    created_by BINARY(16)   NOT NULL,
     updated_at DATETIME,
-    updated_by CHAR(36),
+    updated_by BINARY(16),
     deleted    BOOLEAN      NOT NULL DEFAULT FALSE
 );

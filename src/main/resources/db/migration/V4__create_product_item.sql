@@ -1,13 +1,13 @@
 CREATE TABLE product_item
 (
-    id         CHAR(36) PRIMARY KEY,
-    product_id CHAR(36) NOT NULL,
-    item_id    CHAR(36) NOT NULL,
-    created_at DATETIME NOT NULL,
-    created_by CHAR(36) NOT NULL,
+    id         BINARY(16) PRIMARY KEY,
+    product_id BINARY(16) NOT NULL,
+    item_id    BINARY(16) NOT NULL,
+    created_at DATETIME   NOT NULL,
+    created_by BINARY(16) NOT NULL,
     updated_at DATETIME,
-    updated_by CHAR(36),
-    deleted    BOOLEAN  NOT NULL DEFAULT FALSE,
+    updated_by BINARY(16),
+    deleted    BOOLEAN    NOT NULL DEFAULT FALSE,
 
     CONSTRAINT fk_product_item_product
         FOREIGN KEY (product_id)

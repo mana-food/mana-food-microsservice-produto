@@ -10,7 +10,7 @@ class CategoryJpaEntity(
 
     id: UUID,
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     val name: String,
 
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)

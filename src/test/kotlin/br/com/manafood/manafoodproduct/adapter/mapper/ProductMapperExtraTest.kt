@@ -8,6 +8,7 @@ import br.com.manafood.manafoodproduct.testutil.Fixtures
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
+import java.math.BigDecimal
 import java.util.*
 
 class ProductMapperExtraTest {
@@ -17,7 +18,7 @@ class ProductMapperExtraTest {
             id = UUID.randomUUID(),
             name = "Produto Y",
             description = "Desc Y",
-            unitPrice = 22.5,
+            unitPrice = BigDecimal("22.5"),
             categoryId = UUID.randomUUID(),
             itemIds = emptyList()
         )

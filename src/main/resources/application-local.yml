@@ -2,10 +2,11 @@ spring:
   application:
     name: manafoodproduct
 
+  # Configurações para desenvolvimento local
   datasource:
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
+    url: jdbc:mysql://localhost:3307/db_manafood_product?useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: senha123
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   flyway:
@@ -16,16 +17,18 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+    show-sql: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
 
+# Logging para desenvolvimento
 logging:
   level:
-    root: ${LOGGING_LEVEL_ROOT:INFO}
-    org.springframework.web: ${LOGGING_LEVEL_SPRING:INFO}
-    org.hibernate.SQL: ${LOGGING_LEVEL_SQL:INFO}
-    br.com.manafood: ${LOGGING_LEVEL_MANAFOOD:DEBUG}
+    org.springframework.web: DEBUG
+    org.hibernate.SQL: DEBUG
+    br.com.manafood: DEBUG
 
 management:
   endpoints:
@@ -35,4 +38,3 @@ management:
   endpoint:
     health:
       show-details: always
-

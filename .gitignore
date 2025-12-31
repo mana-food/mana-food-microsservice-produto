@@ -31,3 +31,16 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Arquivos de configuração sensíveis
+.env
+*.env.local
+application-local.properties
+application-local.yml
+
+# Docker volumes
+mysql_data/
+
+# Dependências
+.mvn/
+

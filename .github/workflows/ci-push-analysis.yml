@@ -22,6 +22,7 @@ jobs:
       - name: Criar arquivo .env para Docker Compose
         run: |
           echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" >> .env
+          echo "MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}" >> .env
           echo "SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}" >> .env
           echo "SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }}" >> .env
 
@@ -45,4 +46,4 @@ jobs:
 
       - name: Parar e remover containers
         if: always()
-        run: docker-compose down -v
+        run: docker compose down -v

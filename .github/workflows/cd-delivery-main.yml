@@ -170,7 +170,7 @@ jobs:
         run: |
           echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
 
-  # 4. Trigger infra deployment pipeline #ToDo: descomentar quando o pipeline de infra estiver pronta
+  # 4. Trigger infra deployment pipeline
   trigger-pipeline-repo-infra:
     runs-on: ubuntu-latest
     needs: docker-build-push

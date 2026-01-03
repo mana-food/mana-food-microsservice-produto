@@ -25,13 +25,13 @@ class CategoryJpaRepositoryAdapter(
     }
 
     override fun findById(id: UUID): Category? {
-        return springDataRepository.findById(id)
+        return springDataRepository.findByIdAndNotDeleted(id)
             .map { CategoryEntityMapper.toDomain(it) }
             .orElse(null)
     }
 
     override fun findByIds(ids: List<UUID>): List<Category> {
-        return springDataRepository.findAllById(ids)
+        return springDataRepository.findAllByIdAndNotDeleted(ids)
             .map { CategoryEntityMapper.toDomain(it) }
     }
 
@@ -45,7 +45,7 @@ class CategoryJpaRepositoryAdapter(
     override fun deleteById(id: UUID): Boolean {
         springDataRepository.deleteById(id)
 
-        val exists = springDataRepository.existsById(id)
+        val exists = springDataRepository.existsByIdAndNotDeleted(id)
         return !exists
     }
 }

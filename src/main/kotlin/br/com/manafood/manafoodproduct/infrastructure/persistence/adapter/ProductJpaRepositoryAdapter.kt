@@ -25,13 +25,13 @@ class ProductJpaRepositoryAdapter(
     }
 
     override fun findById(id: UUID): Product? {
-        return springDataRepository.findById(id)
+        return springDataRepository.findByIdAndNotDeleted(id)
             .map { ProductEntityMapper.toDomain(it) }
             .orElse(null)
     }
 
     override fun findByIds(ids: List<UUID>): List<Product> {
-        return springDataRepository.findAllById(ids)
+        return springDataRepository.findAllByIdAndNotDeleted(ids)
             .map { ProductEntityMapper.toDomain(it) }
     }
 
@@ -45,7 +45,7 @@ class ProductJpaRepositoryAdapter(
     override fun deleteById(id: UUID): Boolean {
         springDataRepository.deleteById(id)
 
-        val exists = springDataRepository.existsById(id)
+        val exists = springDataRepository.existsByIdAndNotDeleted(id)
         return !exists
     }
 }

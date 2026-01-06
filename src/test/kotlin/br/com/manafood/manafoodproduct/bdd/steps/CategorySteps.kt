@@ -29,7 +29,7 @@ class CategorySteps : CucumberSpringConfiguration() {
 
     @Quando("eu criar uma categoria com nome {string}")
     fun `eu criar uma categoria com nome`(nome: String) {
-        val url = "${getBaseUrl()}/categories"
+        val url = "${getBaseUrl()}/api/categories"
         val request = CreateCategoryRequest(name = nome)
 
         response = restTemplate.postForEntity(url, request, CategoryResponse::class.java)
@@ -56,7 +56,7 @@ class CategorySteps : CucumberSpringConfiguration() {
 
     @Dado("que existe uma categoria com nome {string}")
     fun `que existe uma categoria com nome`(nome: String) {
-        val url = "${getBaseUrl()}/categories"
+        val url = "${getBaseUrl()}/api/categories"
         val request = CreateCategoryRequest(name = nome)
 
         val createResponse = restTemplate.postForEntity(url, request, CategoryResponse::class.java)
@@ -70,7 +70,7 @@ class CategorySteps : CucumberSpringConfiguration() {
     fun `eu buscar a categoria pelo ID`() {
         assertNotNull(categoryId, "ID da categoria não está disponível")
 
-        val url = "${getBaseUrl()}/categories/${categoryId}"
+        val url = "${getBaseUrl()}/api/categories/${categoryId}"
         response = restTemplate.getForEntity(url, CategoryResponse::class.java)
         categoryResponse = response?.body as? CategoryResponse
     }
@@ -93,7 +93,7 @@ class CategorySteps : CucumberSpringConfiguration() {
 
     @Quando("eu buscar a categoria pelo ID inexistente")
     fun `eu buscar a categoria pelo ID inexistente`() {
-        val url = "${getBaseUrl()}/categories/${categoryId}"
+        val url = "${getBaseUrl()}/api/categories/${categoryId}"
         try {
             response = restTemplate.getForEntity(url, CategoryResponse::class.java)
         } catch (_: Exception) {
@@ -111,7 +111,7 @@ class CategorySteps : CucumberSpringConfiguration() {
 
     @Dado("que existem as seguintes categorias:")
     fun `que existem as seguintes categorias`(dataTable: DataTable) {
-        val url = "${getBaseUrl()}/categories"
+        val url = "${getBaseUrl()}/api/categories"
 
         dataTable.asMaps().forEach { row ->
             val nome = row["nome"] ?: ""
@@ -122,7 +122,7 @@ class CategorySteps : CucumberSpringConfiguration() {
 
     @Quando("eu listar todas as categorias")
     fun `eu listar todas as categorias`() {
-        val url = "${getBaseUrl()}/categories"
+        val url = "${getBaseUrl()}/api/categories"
         val typeRef = object : ParameterizedTypeReference<Paged<CategoryResponse>>() {}
         response = restTemplate.exchange(url, HttpMethod.GET, null, typeRef)
     }
@@ -138,7 +138,7 @@ class CategorySteps : CucumberSpringConfiguration() {
     fun `eu atualizar o nome da categoria para`(novoNome: String) {
         assertNotNull(categoryId, "ID da categoria não está disponível")
 
-        val url = "${getBaseUrl()}/categories"
+        val url = "${getBaseUrl()}/api/categories"
         val request = UpdateCategoryRequest(id = categoryId!!, name = novoNome)
         val httpEntity = HttpEntity(request)
 
@@ -156,7 +156,7 @@ class CategorySteps : CucumberSpringConfiguration() {
     fun `eu excluir a categoria`() {
         assertNotNull(categoryId, "ID da categoria não está disponível")
 
-        val url = "${getBaseUrl()}/categories/${categoryId}"
+        val url = "${getBaseUrl()}/api/categories/${categoryId}"
         response = restTemplate.exchange(url, HttpMethod.DELETE, null, Void::class.java)
     }
 
@@ -167,7 +167,7 @@ class CategorySteps : CucumberSpringConfiguration() {
 
     @Dado("que existem {int} categorias cadastradas")
     fun `que existem categorias cadastradas`(quantidade: Int) {
-        val url = "${getBaseUrl()}/categories"
+        val url = "${getBaseUrl()}/api/categories"
 
         for (i in 1..quantidade) {
             val request = CreateCategoryRequest(name = "Categoria $i")
@@ -177,7 +177,7 @@ class CategorySteps : CucumberSpringConfiguration() {
 
     @Quando("eu listar as categorias da página {int} com tamanho {int}")
     fun `eu listar as categorias da página com tamanho`(page: Int, pageSize: Int) {
-        val url = "${getBaseUrl()}/categories?page=$page&pageSize=$pageSize"
+        val url = "${getBaseUrl()}/api/categories?page=$page&pageSize=$pageSize"
         val typeRef = object : ParameterizedTypeReference<Paged<CategoryResponse>>() {}
         response = restTemplate.exchange(url, HttpMethod.GET, null, typeRef)
     }

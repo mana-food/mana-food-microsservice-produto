@@ -38,7 +38,7 @@ class ItemSteps : CucumberSpringConfiguration() {
 
     @Dado("que existe uma categoria {string} para o item")
     fun `que existe uma categoria para o item`(nomeCategoria: String) {
-        val url = "${getBaseUrl()}/categories"
+        val url = "${getBaseUrl()}/api/categories"
         val request = CreateCategoryRequest(name = nomeCategoria)
 
         val createResponse = restTemplate.postForEntity(url, request, CategoryResponse::class.java)
@@ -55,7 +55,7 @@ class ItemSteps : CucumberSpringConfiguration() {
         val nome = dados["nome"] ?: "Item Teste"
         val descricao = dados["descricao"] ?: "Descrição Teste"
 
-        val url = "${getBaseUrl()}/items"
+        val url = "${getBaseUrl()}/api/items"
         val request = CreateItemRequest(
             name = nome,
             description = descricao,
@@ -85,7 +85,7 @@ class ItemSteps : CucumberSpringConfiguration() {
             `que existe uma categoria para o item`("Categoria Padrão")
         }
 
-        val url = "${getBaseUrl()}/items"
+        val url = "${getBaseUrl()}/api/items"
         val request = CreateItemRequest(
             name = nomeItem,
             description = "Item de teste",
@@ -103,7 +103,7 @@ class ItemSteps : CucumberSpringConfiguration() {
     fun `eu buscar o item pelo ID`() {
         assertNotNull(itemId, "ID do item não está disponível")
 
-        val url = "${getBaseUrl()}/items/${itemId}"
+        val url = "${getBaseUrl()}/api/items/${itemId}"
         response = restTemplate.getForEntity(url, ItemResponse::class.java)
         itemResponse = response?.body as? ItemResponse
     }
@@ -126,7 +126,7 @@ class ItemSteps : CucumberSpringConfiguration() {
 
     @Quando("eu buscar o item pelo ID inexistente")
     fun `eu buscar o item pelo ID inexistente`() {
-        val url = "${getBaseUrl()}/items/${itemId}"
+        val url = "${getBaseUrl()}/api/items/${itemId}"
         try {
             response = restTemplate.getForEntity(url, ItemResponse::class.java)
         } catch (_: Exception) {
@@ -146,7 +146,7 @@ class ItemSteps : CucumberSpringConfiguration() {
     fun `que existem os seguintes itens cadastrados`(dataTable: DataTable) {
         assertNotNull(categoryId, "Categoria não foi criada")
 
-        val url = "${getBaseUrl()}/items"
+        val url = "${getBaseUrl()}/api/items"
 
         dataTable.asMaps().forEach { row ->
             val nome = row["nome"] ?: ""
@@ -161,7 +161,7 @@ class ItemSteps : CucumberSpringConfiguration() {
 
     @Quando("eu listar todos os itens")
     fun `eu listar todos os itens`() {
-        val url = "${getBaseUrl()}/items"
+        val url = "${getBaseUrl()}/api/items"
         val typeRef = object : ParameterizedTypeReference<Paged<ItemResponse>>() {}
         response = restTemplate.exchange(url, HttpMethod.GET, null, typeRef)
     }
@@ -178,7 +178,7 @@ class ItemSteps : CucumberSpringConfiguration() {
         assertNotNull(itemId, "ID do item não está disponível")
         assertNotNull(categoryId, "ID da categoria não está disponível")
 
-        val url = "${getBaseUrl()}/items"
+        val url = "${getBaseUrl()}/api/items"
         val request = UpdateItemRequest(
             id = itemId!!,
             name = novoNome,
@@ -201,7 +201,7 @@ class ItemSteps : CucumberSpringConfiguration() {
     fun `eu excluir o item`() {
         assertNotNull(itemId, "ID do item não está disponível")
 
-        val url = "${getBaseUrl()}/items/${itemId}"
+        val url = "${getBaseUrl()}/api/items/${itemId}"
         response = restTemplate.exchange(url, HttpMethod.DELETE, null, Void::class.java)
     }
 
@@ -217,7 +217,7 @@ class ItemSteps : CucumberSpringConfiguration() {
             `que existe uma categoria para o item`("Categoria Itens")
         }
 
-        val url = "${getBaseUrl()}/items"
+        val url = "${getBaseUrl()}/api/items"
 
         for (i in 1..quantidade) {
             val request = CreateItemRequest(
@@ -231,7 +231,7 @@ class ItemSteps : CucumberSpringConfiguration() {
 
     @Quando("eu listar os itens da página {int} com tamanho {int}")
     fun `eu listar os itens da página com tamanho`(page: Int, pageSize: Int) {
-        val url = "${getBaseUrl()}/items?page=$page&pageSize=$pageSize"
+        val url = "${getBaseUrl()}/api/items?page=$page&pageSize=$pageSize"
         val typeRef = object : ParameterizedTypeReference<Paged<ItemResponse>>() {}
         response = restTemplate.exchange(url, HttpMethod.GET, null, typeRef)
     }
@@ -257,7 +257,7 @@ class ItemSteps : CucumberSpringConfiguration() {
 
     @Quando("eu tentar criar um item sem categoria válida")
     fun `eu tentar criar um item sem categoria válida`() {
-        val url = "${getBaseUrl()}/items"
+        val url = "${getBaseUrl()}/api/items"
         val request = CreateItemRequest(
             name = "Item Sem Categoria",
             description = "Teste",

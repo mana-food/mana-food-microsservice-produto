@@ -42,7 +42,7 @@ class ProductSteps : CucumberSpringConfiguration() {
 
     @Dado("que existe uma categoria {string} para o produto")
     fun `que existe uma categoria para o produto`(nomeCategoria: String) {
-        val url = "${getBaseUrl()}/categories"
+        val url = "${getBaseUrl()}/api/categories"
         val request = CreateCategoryRequest(name = nomeCategoria)
 
         val createResponse = restTemplate.postForEntity(url, request, CategoryResponse::class.java)
@@ -55,7 +55,7 @@ class ProductSteps : CucumberSpringConfiguration() {
     fun `que existem itens disponíveis para o produto`() {
         assertNotNull(categoryId, "Categoria não foi criada ainda")
 
-        val url = "${getBaseUrl()}/items"
+        val url = "${getBaseUrl()}/api/items"
 
         // Criar alguns itens de exemplo
         val items = listOf("Açúcar", "Água", "Gás Carbônico")
@@ -83,7 +83,7 @@ class ProductSteps : CucumberSpringConfiguration() {
         val descricao = dados["descricao"] ?: "Descrição Teste"
         val preco = dados["preco"]?.toDoubleOrNull() ?: 10.0
 
-        val url = "${getBaseUrl()}/products"
+        val url = "${getBaseUrl()}/api/products"
         val request = CreateProductRequest(
             name = nome,
             description = descricao,
@@ -123,7 +123,7 @@ class ProductSteps : CucumberSpringConfiguration() {
             `que existem itens disponíveis para o produto`()
         }
 
-        val url = "${getBaseUrl()}/products"
+        val url = "${getBaseUrl()}/api/products"
         val request = CreateProductRequest(
             name = nomeProduto,
             description = "Produto de teste",
@@ -143,7 +143,7 @@ class ProductSteps : CucumberSpringConfiguration() {
     fun `eu buscar o produto pelo ID`() {
         assertNotNull(productId, "ID do produto não está disponível")
 
-        val url = "${getBaseUrl()}/products/${productId}"
+        val url = "${getBaseUrl()}/api/products/${productId}"
         response = restTemplate.getForEntity(url, ProductResponse::class.java)
         productResponse = response?.body as? ProductResponse
     }
@@ -166,7 +166,7 @@ class ProductSteps : CucumberSpringConfiguration() {
 
     @Quando("eu buscar o produto pelo ID inexistente")
     fun `eu buscar o produto pelo ID inexistente`() {
-        val url = "${getBaseUrl()}/products/${productId}"
+        val url = "${getBaseUrl()}/api/products/${productId}"
         try {
             response = restTemplate.getForEntity(url, ProductResponse::class.java)
         } catch (_: Exception) {
@@ -187,7 +187,7 @@ class ProductSteps : CucumberSpringConfiguration() {
         assertNotNull(productId, "ID do produto não está disponível")
         assertNotNull(categoryId, "ID da categoria não está disponível")
 
-        val url = "${getBaseUrl()}/products"
+        val url = "${getBaseUrl()}/api/products"
         val request = UpdateProductRequest(
             id = productId!!,
             name = novoNome,
@@ -212,7 +212,7 @@ class ProductSteps : CucumberSpringConfiguration() {
     fun `eu excluir o produto`() {
         assertNotNull(productId, "ID do produto não está disponível")
 
-        val url = "${getBaseUrl()}/products/${productId}"
+        val url = "${getBaseUrl()}/api/products/${productId}"
         response = restTemplate.exchange(url, HttpMethod.DELETE, null, Void::class.java)
     }
 
@@ -229,7 +229,7 @@ class ProductSteps : CucumberSpringConfiguration() {
             `que existem itens disponíveis para o produto`()
         }
 
-        val url = "${getBaseUrl()}/products"
+        val url = "${getBaseUrl()}/api/products"
 
         for (i in 1..quantidade) {
             val request = CreateProductRequest(
@@ -245,7 +245,7 @@ class ProductSteps : CucumberSpringConfiguration() {
 
     @Quando("eu listar os produtos da página {int} com tamanho {int}")
     fun `eu listar os produtos da página com tamanho`(page: Int, pageSize: Int) {
-        val url = "${getBaseUrl()}/products?page=$page&pageSize=$pageSize"
+        val url = "${getBaseUrl()}/api/products?page=$page&pageSize=$pageSize"
         val typeRef = object : ParameterizedTypeReference<Paged<ProductResponse>>() {}
         response = restTemplate.exchange(url, HttpMethod.GET, null, typeRef)
     }
@@ -271,7 +271,7 @@ class ProductSteps : CucumberSpringConfiguration() {
 
     @Quando("eu tentar criar um produto sem categoria")
     fun `eu tentar criar um produto sem categoria`() {
-        val url = "${getBaseUrl()}/products"
+        val url = "${getBaseUrl()}/api/products"
         val request = CreateProductRequest(
             name = "Produto Sem Categoria",
             description = "Teste",

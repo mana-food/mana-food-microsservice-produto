@@ -22,7 +22,7 @@ class CategoryJpaRepositoryAdapterTest {
             createdAt = LocalDateTime.now(),
             createdBy = UUID.randomUUID()
         )
-        every { springRepo.findById(jpa.id) } returns Optional.of(jpa)
+        every { springRepo.findByIdAndNotDeleted(jpa.id) } returns Optional.of(jpa)
 
         val result = adapter.findById(jpa.id)
         assertEquals(jpa.id, result?.id)

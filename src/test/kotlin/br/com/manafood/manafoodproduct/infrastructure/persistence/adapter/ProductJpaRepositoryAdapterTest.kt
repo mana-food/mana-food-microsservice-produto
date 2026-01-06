@@ -42,7 +42,7 @@ class ProductJpaRepositoryAdapterTest {
             createdBy = UUID.randomUUID()
         )
 
-        every { springRepo.findById(productJpa.id) } returns Optional.of(productJpa)
+        every { springRepo.findByIdAndNotDeleted(productJpa.id) } returns Optional.of(productJpa)
 
         // When
         val result = adapter.findById(productJpa.id)
@@ -51,21 +51,21 @@ class ProductJpaRepositoryAdapterTest {
         assertNotNull(result)
         assertEquals(productJpa.id, result.id)
         assertEquals(productJpa.name, result.name)
-        verify(exactly = 1) { springRepo.findById(productJpa.id) }
+        verify(exactly = 1) { springRepo.findByIdAndNotDeleted(productJpa.id) }
     }
 
     @Test
     fun `findById should return null when not found`() {
         // Given
         val id = UUID.randomUUID()
-        every { springRepo.findById(id) } returns Optional.empty()
+        every { springRepo.findByIdAndNotDeleted(id) } returns Optional.empty()
 
         // When
         val result = adapter.findById(id)
 
         // Then
         assertNull(result)
-        verify(exactly = 1) { springRepo.findById(id) }
+        verify(exactly = 1) { springRepo.findByIdAndNotDeleted(id) }
     }
 
     @Test

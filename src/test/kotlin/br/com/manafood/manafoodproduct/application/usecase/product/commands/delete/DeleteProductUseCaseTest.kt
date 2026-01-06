@@ -59,7 +59,7 @@ class DeleteProductUseCaseTest {
             useCase.execute(command)
         }
 
-        assertEquals("[DELETE_PRODUCT_USE_CASE] Produto com id ${command.id} não encontrado.", exception.message)
+        assertEquals("[DELETE_PRODUCT_USE_CASE] Produto não encontrado para o id [${command.id}].", exception.message)
         verify(exactly = 1) { productRepository.findById(command.id) }
         verify(exactly = 0) { productRepository.save(any()) }
     }
@@ -81,7 +81,7 @@ class DeleteProductUseCaseTest {
             useCase.execute(command)
         }
 
-        assertEquals("[DELETE_PRODUCT_USE_CASE] Falha ao tentar deletar o item", exception.message)
+        assertEquals("[DELETE_PRODUCT_USE_CASE] Falha ao tentar deletar o produto", exception.message)
         verify(exactly = 1) { productRepository.findById(command.id) }
         verify(exactly = 1) { productRepository.save(any()) }
     }

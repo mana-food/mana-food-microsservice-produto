@@ -38,14 +38,14 @@ object CategoryMapper {
             updatedAt = category.updatedAt
         )
 
-    fun toResponsePaged(catehoriesPaged: Paged<Category>): Paged<CategoryResponse> {
-        val categoryResponses = catehoriesPaged.items.map { toResponse(it) }
+    fun toResponsePaged(categoriesPaged: Paged<Category>): Paged<CategoryResponse> {
+        val categoryResponses = categoriesPaged.items.map { toResponse(it) }
         return Paged(
             items = categoryResponses,
-            page = catehoriesPaged.page,
-            pageSize = catehoriesPaged.pageSize,
-            totalItems = catehoriesPaged.totalItems,
-            totalPages = catehoriesPaged.totalPages
+            page = categoriesPaged.page,
+            pageSize = categoriesPaged.pageSize,
+            totalItems = categoriesPaged.totalItems,
+            totalPages = categoriesPaged.totalPages
         )
     }
 }

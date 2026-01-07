@@ -1,7 +1,7 @@
 # Etapa 1 -> Base (Runtime)
 FROM eclipse-temurin:17-jre-alpine AS base
 WORKDIR /app
-EXPOSE 8080
+EXPOSE 8081
 
 # Etapa 2 -> Build com Maven
 FROM maven:3.9.6-eclipse-temurin-17-alpine AS build

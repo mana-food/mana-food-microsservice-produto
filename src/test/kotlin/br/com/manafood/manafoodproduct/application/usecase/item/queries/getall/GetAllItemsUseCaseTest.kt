@@ -91,5 +91,32 @@ class GetAllItemsUseCaseTest {
         assertEquals(4, result.totalPages)
         verify(exactly = 1) { itemRepository.findPaged(2, 5) }
     }
+
+    @Test
+    fun `execute should return multiple pages correctly`() {
+        // Given
+        val items = List(8) { index ->
+            Fixtures.sampleItem().copy(name = "Item ${index + 1}")
+        }
+        val pagedItems = Paged(
+            items = items,
+            page = 1,
+            pageSize = 8,
+            totalItems = 25L,
+            totalPages = 4
+        )
+        val query = GetAllItemsQuery(page = 1, pageSize = 8)
+
+        every { itemRepository.findPaged(1, 8) } returns pagedItems
+
+        // When
+        val result = useCase.execute(query)
+
+        // Then
+        assertEquals(8, result.items.size)
+        assertEquals(1, result.page)
+        assertEquals(25L, result.totalItems)
+        verify(exactly = 1) { itemRepository.findPaged(1, 8) }
+    }
 }
 

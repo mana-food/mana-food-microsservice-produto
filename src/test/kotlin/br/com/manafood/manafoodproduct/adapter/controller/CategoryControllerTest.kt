@@ -54,7 +54,7 @@ class CategoryControllerTest(@Autowired val mockMvc: MockMvc) {
 
         // When & Then
         mockMvc.perform(
-            post("/categories")
+            post("/api/categories")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(request))
         )
@@ -77,7 +77,7 @@ class CategoryControllerTest(@Autowired val mockMvc: MockMvc) {
 
         // When & Then
         mockMvc.perform(
-            put("/categories")
+            put("/api/categories")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(request))
         )
@@ -94,7 +94,7 @@ class CategoryControllerTest(@Autowired val mockMvc: MockMvc) {
         justRun { deleteCategoryUseCase.execute(any()) }
 
         // When & Then
-        mockMvc.perform(delete("/categories/$id"))
+        mockMvc.perform(delete("/api/categories/$id"))
             .andExpect(status().isNoContent)
     }
 
@@ -105,7 +105,7 @@ class CategoryControllerTest(@Autowired val mockMvc: MockMvc) {
         every { getCategoryByIdUseCase.execute(GetCategoryByIdQuery(category.id!!)) } returns category
 
         // When & Then
-        mockMvc.perform(get("/categories/${category.id}"))
+        mockMvc.perform(get("/api/categories/${category.id}"))
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.id").value(category.id.toString()))
             .andExpect(jsonPath("$.name").value(category.name))
@@ -118,7 +118,7 @@ class CategoryControllerTest(@Autowired val mockMvc: MockMvc) {
         every { getCategoryByIdUseCase.execute(GetCategoryByIdQuery(id)) } returns null
 
         // When & Then
-        mockMvc.perform(get("/categories/$id"))
+        mockMvc.perform(get("/api/categories/$id"))
             .andExpect(status().isNotFound)
     }
 
@@ -138,7 +138,7 @@ class CategoryControllerTest(@Autowired val mockMvc: MockMvc) {
         every { getAllCategoriesUseCase.execute(GetAllCategoriesQuery(0, 10)) } returns pagedCategories
 
         // When & Then
-        mockMvc.perform(get("/categories?page=0&pageSize=10"))
+        mockMvc.perform(get("/api/categories?page=0&pageSize=10"))
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.items").isArray)
             .andExpect(jsonPath("$.items.length()").value(2))
@@ -161,7 +161,7 @@ class CategoryControllerTest(@Autowired val mockMvc: MockMvc) {
         every { getAllCategoriesUseCase.execute(GetAllCategoriesQuery(0, 10)) } returns pagedCategories
 
         // When & Then
-        mockMvc.perform(get("/categories"))
+        mockMvc.perform(get("/api/categories"))
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.page").value(0))
             .andExpect(jsonPath("$.pageSize").value(10))
@@ -177,7 +177,7 @@ class CategoryControllerTest(@Autowired val mockMvc: MockMvc) {
 
         // When & Then
         mockMvc.perform(
-            post("/categories")
+            post("/api/categories")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(request))
         )

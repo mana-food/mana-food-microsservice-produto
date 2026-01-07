@@ -59,7 +59,7 @@ class ProductControllerTest(@Autowired val mockMvc: MockMvc) {
         every { createProductUseCase.execute(any()) } returns product
 
         mockMvc.perform(
-            post("/products")
+            post("/api/products")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(request))
         )
@@ -83,7 +83,7 @@ class ProductControllerTest(@Autowired val mockMvc: MockMvc) {
 
         // When & Then
         mockMvc.perform(
-            post("/products")
+            post("/api/products")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(request))
         )
@@ -110,7 +110,7 @@ class ProductControllerTest(@Autowired val mockMvc: MockMvc) {
 
         // When & Then
         mockMvc.perform(
-            put("/products")
+            put("/api/products")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(request))
         )
@@ -127,7 +127,7 @@ class ProductControllerTest(@Autowired val mockMvc: MockMvc) {
         justRun { deleteProductUseCase.execute(any()) }
 
         // When & Then
-        mockMvc.perform(delete("/products/$id"))
+        mockMvc.perform(delete("/api/products/$id"))
             .andExpect(status().isNoContent)
     }
 
@@ -138,7 +138,7 @@ class ProductControllerTest(@Autowired val mockMvc: MockMvc) {
         every { getProductByIdUseCase.execute(GetProductByIdQuery(product.id!!)) } returns product
 
         // When & Then
-        mockMvc.perform(get("/products/${product.id}"))
+        mockMvc.perform(get("/api/products/${product.id}"))
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.id").value(product.id.toString()))
             .andExpect(jsonPath("$.name").value(product.name))
@@ -149,7 +149,7 @@ class ProductControllerTest(@Autowired val mockMvc: MockMvc) {
         val id = UUID.randomUUID()
         every { getProductByIdUseCase.execute(GetProductByIdQuery(id)) } returns null
 
-        mockMvc.perform(get("/products/$id"))
+        mockMvc.perform(get("/api/products/$id"))
             .andExpect(status().isNotFound)
     }
 
@@ -169,7 +169,7 @@ class ProductControllerTest(@Autowired val mockMvc: MockMvc) {
         every { getAllProductsUseCase.execute(GetAllProductsQuery(0, 10)) } returns pagedProducts
 
         // When & Then
-        mockMvc.perform(get("/products?page=0&pageSize=10"))
+        mockMvc.perform(get("/api/products?page=0&pageSize=10"))
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.items").isArray)
             .andExpect(jsonPath("$.items.length()").value(2))
@@ -192,7 +192,7 @@ class ProductControllerTest(@Autowired val mockMvc: MockMvc) {
         every { getAllProductsUseCase.execute(GetAllProductsQuery(0, 10)) } returns pagedProducts
 
         // When & Then
-        mockMvc.perform(get("/products"))
+        mockMvc.perform(get("/api/products"))
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.page").value(0))
             .andExpect(jsonPath("$.pageSize").value(10))

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
-@RequestMapping("/items")
+@RequestMapping("api/items")
 class ItemController(
     private val createItemUseCase: CreateItemUseCase,
     private val updateItemUseCase: UpdateItemUseCase,

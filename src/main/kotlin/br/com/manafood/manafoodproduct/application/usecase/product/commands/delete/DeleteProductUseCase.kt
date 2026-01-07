@@ -10,8 +10,8 @@ class DeleteProductUseCase(
     fun execute(command: DeleteProductCommand) {
         val productFinded = productRepository.findById(command.id)
         if(productFinded == null) {
-            logger.warn("$PREFIX Produto com id ${command.id} não encontrado.")
-            throw IllegalArgumentException("$PREFIX Produto com id ${command.id} não encontrado.")
+            logger.warn("$PREFIX Produto não encontrado para o id [${command.id}].")
+            throw IllegalArgumentException("$PREFIX Produto não encontrado para o id [${command.id}].")
         }
 
         val deleted = productFinded.copy(
@@ -24,7 +24,7 @@ class DeleteProductUseCase(
             logger.debug("$PREFIX O produto foi deletado com sucesso: ${productFinded.name}")
         } catch (ex: DataAccessException) {
             logger.error("$PREFIX Falha ao tentar deletar o produto: ${productFinded.name}")
-            throw Exception("$PREFIX Falha ao tentar deletar o item", ex)
+            throw Exception("$PREFIX Falha ao tentar deletar o produto", ex)
         }
     }
 

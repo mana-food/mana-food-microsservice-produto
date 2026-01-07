@@ -58,7 +58,7 @@ class ItemControllerTest(@Autowired val mockMvc: MockMvc) {
 
         // When & Then
         mockMvc.perform(
-            post("/items")
+            post("/api/items")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(request))
         )
@@ -83,7 +83,7 @@ class ItemControllerTest(@Autowired val mockMvc: MockMvc) {
 
         // When & Then
         mockMvc.perform(
-            put("/items")
+            put("/api/items")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(request))
         )
@@ -100,7 +100,7 @@ class ItemControllerTest(@Autowired val mockMvc: MockMvc) {
         justRun { deleteItemUseCase.execute(any()) }
 
         // When & Then
-        mockMvc.perform(delete("/items/$id"))
+        mockMvc.perform(delete("/api/items/$id"))
             .andExpect(status().isNoContent)
     }
 
@@ -111,7 +111,7 @@ class ItemControllerTest(@Autowired val mockMvc: MockMvc) {
         every { getItemByIdUseCase.execute(GetItemByIdQuery(item.id!!)) } returns item
 
         // When & Then
-        mockMvc.perform(get("/items/${item.id}"))
+        mockMvc.perform(get("/api/items/${item.id}"))
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.id").value(item.id.toString()))
             .andExpect(jsonPath("$.name").value(item.name))
@@ -124,7 +124,7 @@ class ItemControllerTest(@Autowired val mockMvc: MockMvc) {
         every { getItemByIdUseCase.execute(GetItemByIdQuery(id)) } returns null
 
         // When & Then
-        mockMvc.perform(get("/items/$id"))
+        mockMvc.perform(get("/api/items/$id"))
             .andExpect(status().isNotFound)
     }
 
@@ -144,7 +144,7 @@ class ItemControllerTest(@Autowired val mockMvc: MockMvc) {
         every { getAllItemsUseCase.execute(GetAllItemsQuery(0, 10)) } returns pagedItems
 
         // When & Then
-        mockMvc.perform(get("/items?page=0&pageSize=10"))
+        mockMvc.perform(get("/api/items?page=0&pageSize=10"))
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.items").isArray)
             .andExpect(jsonPath("$.items.length()").value(2))
@@ -167,7 +167,7 @@ class ItemControllerTest(@Autowired val mockMvc: MockMvc) {
         every { getAllItemsUseCase.execute(GetAllItemsQuery(0, 10)) } returns pagedItems
 
         // When & Then
-        mockMvc.perform(get("/items"))
+        mockMvc.perform(get("/api/items"))
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.page").value(0))
             .andExpect(jsonPath("$.pageSize").value(10))

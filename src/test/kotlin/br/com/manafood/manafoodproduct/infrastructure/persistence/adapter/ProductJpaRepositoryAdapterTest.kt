@@ -15,6 +15,7 @@ import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class ProductJpaRepositoryAdapterTest {
 
@@ -153,6 +154,70 @@ class ProductJpaRepositoryAdapterTest {
         assertEquals(product.id, result.id)
         assertEquals(product.name, result.name)
         verify(exactly = 1) { springRepo.save(any<ProductJpaEntity>()) }
+    }
+
+    @Test
+    fun `findPaged should return empty list when no products`() {
+        val pageable = PageRequest.of(0, 10)
+        val page = PageImpl<ProductJpaEntity>(emptyList(), pageable, 0)
+        every { springRepo.findPaged(pageable) } returns page
+
+        val result = adapter.findPaged(0, 10)
+
+        assertEquals(0, result.items.size)
+        assertEquals(0, result.totalItems)
+    }
+
+    @Test
+    fun `deleteById should delete product and return true`() {
+        val id = UUID.randomUUID()
+        every { springRepo.deleteById(id) } returns Unit
+        every { springRepo.existsByIdAndNotDeleted(id) } returns false
+
+        val result = adapter.deleteById(id)
+
+        assertEquals(true, result)
+        verify(exactly = 1) { springRepo.deleteById(id) }
+    }
+
+    @Test
+    fun `deleteById should return false when product still exists`() {
+        val id = UUID.randomUUID()
+        every { springRepo.deleteById(id) } returns Unit
+        every { springRepo.existsByIdAndNotDeleted(id) } returns true
+
+        val result = adapter.deleteById(id)
+
+        assertEquals(false, result)
+    }
+
+    @Test
+    fun `findById with product without description`() {
+        val categoryJpa = CategoryJpaEntity(
+            id = UUID.randomUUID(),
+            name = "Category X",
+            createdAt = LocalDateTime.now(),
+            createdBy = UUID.randomUUID()
+        )
+
+        val productJpa = ProductJpaEntity(
+            id = UUID.randomUUID(),
+            name = "Product X",
+            description = null,
+            unitPrice = BigDecimal("100.0"),
+            category = categoryJpa,
+            productItems = mutableListOf(),
+            createdAt = LocalDateTime.now(),
+            createdBy = UUID.randomUUID()
+        )
+
+        every { springRepo.findByIdAndNotDeleted(productJpa.id) } returns Optional.of(productJpa)
+
+        val result = adapter.findById(productJpa.id)
+
+        assertNotNull(result)
+        // Description pode ser null ou string vazia dependendo do mapeamento
+        assertTrue(result.description.isNullOrEmpty())
     }
 }
 

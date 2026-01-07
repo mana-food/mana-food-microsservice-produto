@@ -91,5 +91,32 @@ class GetAllProductsUseCaseTest {
         assertEquals(3, result.totalPages)
         verify(exactly = 1) { productRepository.findPaged(1, 20) }
     }
+
+    @Test
+    fun `execute should return large page of products`() {
+        // Given
+        val products = List(50) { index ->
+            Fixtures.sampleProduct().copy(name = "Product ${index + 1}")
+        }
+        val pagedProducts = Paged(
+            items = products,
+            page = 0,
+            pageSize = 50,
+            totalItems = 150L,
+            totalPages = 3
+        )
+        val query = GetAllProductsQuery(page = 0, pageSize = 50)
+
+        every { productRepository.findPaged(0, 50) } returns pagedProducts
+
+        // When
+        val result = useCase.execute(query)
+
+        // Then
+        assertEquals(50, result.items.size)
+        assertEquals(0, result.page)
+        assertEquals(150L, result.totalItems)
+        verify(exactly = 1) { productRepository.findPaged(0, 50) }
+    }
 }
 

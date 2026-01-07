@@ -91,5 +91,60 @@ class GetAllCategoriesUseCaseTest {
         assertEquals(7, result.totalPages)
         verify(exactly = 1) { categoryRepository.findPaged(3, 15) }
     }
+
+    @Test
+    fun `execute should return first page when requested`() {
+        // Given
+        val categories = List(10) { index ->
+            Fixtures.sampleCategory().copy(name = "Category ${index + 1}")
+        }
+        val pagedCategories = Paged(
+            items = categories,
+            page = 0,
+            pageSize = 10,
+            totalItems = 50L,
+            totalPages = 5
+        )
+        val query = GetAllCategoriesQuery(page = 0, pageSize = 10)
+
+        every { categoryRepository.findPaged(0, 10) } returns pagedCategories
+
+        // When
+        val result = useCase.execute(query)
+
+        // Then
+        assertEquals(10, result.items.size)
+        assertEquals(0, result.page)
+        assertEquals(50L, result.totalItems)
+        verify(exactly = 1) { categoryRepository.findPaged(0, 10) }
+    }
+
+    @Test
+    fun `execute should return last page with fewer items`() {
+        // Given
+        val categories = List(3) { index ->
+            Fixtures.sampleCategory().copy(name = "Category ${index + 1}")
+        }
+        val pagedCategories = Paged(
+            items = categories,
+            page = 4,
+            pageSize = 10,
+            totalItems = 43L,
+            totalPages = 5
+        )
+        val query = GetAllCategoriesQuery(page = 4, pageSize = 10)
+
+        every { categoryRepository.findPaged(4, 10) } returns pagedCategories
+
+        // When
+        val result = useCase.execute(query)
+
+        // Then
+        assertEquals(3, result.items.size)
+        assertEquals(4, result.page)
+        assertEquals(10, result.pageSize)
+        assertEquals(43L, result.totalItems)
+        verify(exactly = 1) { categoryRepository.findPaged(4, 10) }
+    }
 }
 

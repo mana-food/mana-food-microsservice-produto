@@ -26,10 +26,10 @@ class UpdateItemUseCaseTest {
         val existingItem = Fixtures.sampleItem()
         val category = Fixtures.sampleCategory()
         val command = UpdateItemCommand(
-            id = existingItem.id!!,
+            id = existingItem.id,
             name = "Updated Item",
             description = "Updated Description",
-            categoryId = category.id!!,
+            categoryId = category.id,
             updatedBy = UUID.randomUUID()
         )
 
@@ -91,7 +91,7 @@ class UpdateItemUseCaseTest {
         // Given
         val existingItem = Fixtures.sampleItem()
         val command = UpdateItemCommand(
-            id = existingItem.id!!,
+            id = existingItem.id,
             name = "Updated Item",
             description = "Updated Description",
             categoryId = UUID.randomUUID(),
@@ -118,10 +118,10 @@ class UpdateItemUseCaseTest {
         val existingItem = Fixtures.sampleItem()
         val category = Fixtures.sampleCategory()
         val command = UpdateItemCommand(
-            id = existingItem.id!!,
+            id = existingItem.id,
             name = "Updated Item",
             description = "Updated Description",
-            categoryId = category.id!!,
+            categoryId = category.id,
             updatedBy = UUID.randomUUID()
         )
 

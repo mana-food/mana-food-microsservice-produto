@@ -17,9 +17,9 @@ class GetProductByIdUseCaseTest {
     @Test
     fun `execute should return product when found`() {
         val product = Fixtures.sampleProduct()
-        every { repository.findById(product.id!!) } returns product
+        every { repository.findById(product.id) } returns product
 
-        val result = useCase.execute(GetProductByIdQuery(product.id!!))
+        val result = useCase.execute(GetProductByIdQuery(product.id))
 
         assertEquals(product, result)
     }

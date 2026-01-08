@@ -3,6 +3,7 @@ package br.com.manafood.manafoodproduct.infrastructure.persistence.adapter
 import br.com.manafood.manafoodproduct.infrastructure.persistence.entity.ProductJpaEntity
 import br.com.manafood.manafoodproduct.infrastructure.persistence.entity.CategoryJpaEntity
 import br.com.manafood.manafoodproduct.infrastructure.persistence.mapper.ProductEntityMapper
+import br.com.manafood.manafoodproduct.infrastructure.persistence.repository.ItemJpaRepository
 import br.com.manafood.manafoodproduct.infrastructure.persistence.repository.ProductJpaRepository
 import io.mockk.every
 import io.mockk.mockk
@@ -22,7 +23,8 @@ class ProductJpaRepositoryAdapterTest {
 
     private val springRepo = mockk<ProductJpaRepository>()
     private val productEntityMapper = mockk<ProductEntityMapper>()
-    private val adapter = ProductJpaRepositoryAdapter(springRepo, productEntityMapper)
+    private val itemJpaRepository = mockk<ItemJpaRepository>()
+    private val adapter = ProductJpaRepositoryAdapter(springRepo, productEntityMapper, itemJpaRepository)
 
     @Test
     fun `findById should return product when found`() {
@@ -167,7 +169,7 @@ class ProductJpaRepositoryAdapterTest {
             description = "Desc",
             unitPrice = BigDecimal("100.00"),
             category = category,
-            categoryId = category.id!!,
+            categoryId = category.id,
             items = mutableListOf(),
             createdBy = UUID.randomUUID(),
             deleted = false
@@ -203,6 +205,7 @@ class ProductJpaRepositoryAdapterTest {
         )
 
         every { productEntityMapper.toEntity(product) } returns productJpa
+        every { springRepo.findById(product.id) } returns Optional.empty()
         every { springRepo.save(productJpa) } returns savedJpa
         every { productEntityMapper.toDomain(savedJpa) } returns product
 

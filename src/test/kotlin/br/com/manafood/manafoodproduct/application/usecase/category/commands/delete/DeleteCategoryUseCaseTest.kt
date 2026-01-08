@@ -23,7 +23,7 @@ class DeleteCategoryUseCaseTest {
         // Given
         val existingCategory = Fixtures.sampleCategory()
         val command = DeleteCategoryCommand(
-            id = existingCategory.id!!,
+            id = existingCategory.id,
             deletedBy = UUID.randomUUID()
         )
 
@@ -69,7 +69,7 @@ class DeleteCategoryUseCaseTest {
         // Given
         val existingCategory = Fixtures.sampleCategory()
         val command = DeleteCategoryCommand(
-            id = existingCategory.id!!,
+            id = existingCategory.id,
             deletedBy = UUID.randomUUID()
         )
 

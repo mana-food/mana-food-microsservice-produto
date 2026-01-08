@@ -135,7 +135,7 @@ class ProductControllerTest(@Autowired val mockMvc: MockMvc) {
     fun `getById should return 200 with product when found`() {
         // Given
         val product = Fixtures.sampleProduct()
-        every { getProductByIdUseCase.execute(GetProductByIdQuery(product.id!!)) } returns product
+        every { getProductByIdUseCase.execute(GetProductByIdQuery(product.id)) } returns product
 
         // When & Then
         mockMvc.perform(get("/api/products/${product.id}"))

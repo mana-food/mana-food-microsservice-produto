@@ -20,11 +20,11 @@ abstract class BaseJpaEntity(
     val createdBy: UUID,
 
     @Column
-    val updatedAt: LocalDateTime? = null,
+    var updatedAt: LocalDateTime? = null,
 
     @Column
-    val updatedBy: UUID? = null,
+    var updatedBy: UUID? = null,
 
     @Column(nullable = false)
-    val deleted: Boolean = false
+    var deleted: Boolean = false
 )

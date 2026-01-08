@@ -23,7 +23,7 @@ class UpdateCategoryUseCaseTest {
         // Given
         val existingCategory = Fixtures.sampleCategory()
         val command = UpdateCategoryCommand(
-            id = existingCategory.id!!,
+            id = existingCategory.id,
             name = "Updated Category",
             updatedBy = UUID.randomUUID()
         )
@@ -77,7 +77,7 @@ class UpdateCategoryUseCaseTest {
         // Given
         val existingCategory = Fixtures.sampleCategory()
         val command = UpdateCategoryCommand(
-            id = existingCategory.id!!,
+            id = existingCategory.id,
             name = "Updated Category",
             updatedBy = UUID.randomUUID()
         )

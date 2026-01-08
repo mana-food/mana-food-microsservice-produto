@@ -19,8 +19,9 @@ class RepositoryConfig {
     @Bean
     fun productRepository(
         springRepo: ProductJpaRepository,
-        productEntityMapper: ProductEntityMapper
-    ): ProductRepository = ProductJpaRepositoryAdapter(springRepo, productEntityMapper)
+        productEntityMapper: ProductEntityMapper,
+        itemJpaRepository: ItemJpaRepository
+    ): ProductRepository = ProductJpaRepositoryAdapter(springRepo, productEntityMapper, itemJpaRepository)
 
     @Bean
     fun itemRepository(

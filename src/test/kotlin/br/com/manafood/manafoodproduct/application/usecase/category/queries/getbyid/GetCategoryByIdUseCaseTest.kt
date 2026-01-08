@@ -15,9 +15,9 @@ class GetCategoryByIdUseCaseTest {
     @Test
     fun `execute returns category when found`() {
         val category = Fixtures.sampleCategory()
-        every { repository.findById(category.id!!) } returns category
+        every { repository.findById(category.id) } returns category
 
-        val result = useCase.execute(GetCategoryByIdQuery(category.id!!))
+        val result = useCase.execute(GetCategoryByIdQuery(category.id))
         assertEquals(category, result)
     }
 

@@ -14,7 +14,7 @@ class GetAllItemsUseCase(
             pageSize = query.pageSize
         )
 
-        if(itemsListFinded.items.isEmpty()) {
+        if(itemsListFinded.items.isNotEmpty()) {
             logger.debug("$PREFIX Foi/Foram encontrado(s) [${itemsListFinded.totalItems}] item(s) na base de dados.")
         } else {
             logger.debug("$PREFIX Não foi encontrado nenhum item na base de dados.")

@@ -14,7 +14,7 @@ class GetAllProductsUseCase(
             pageSize = query.pageSize
         )
 
-        if(productsListFinded.items.isEmpty()) {
+        if(!productsListFinded.items.isNotEmpty()) {
             logger.debug("$PREFIX Foi/Foram encontrado(s) [${productsListFinded.totalItems}] produto(s) na base de dados.")
         } else {
             logger.debug("$PREFIX Não foi encontrado nenhum produto na base de dados.")

@@ -11,7 +11,8 @@ import java.util.UUID
 
 @Repository
 class ProductJpaRepositoryAdapter(
-    private val springDataRepository: ProductJpaRepository
+    private val springDataRepository: ProductJpaRepository,
+    private val productEntityMapper: ProductEntityMapper
 ) : ProductRepository {
 
     override fun findPaged(
@@ -21,25 +22,25 @@ class ProductJpaRepositoryAdapter(
         val pageable = PageRequest.of(page, pageSize)
         val productsPaged = springDataRepository.findPaged(pageable)
 
-        return ProductEntityMapper.toPagedDomain(productsPaged)
+        return productEntityMapper.toPagedDomain(productsPaged)
     }
 
     override fun findById(id: UUID): Product? {
         return springDataRepository.findByIdAndNotDeleted(id)
-            .map { ProductEntityMapper.toDomain(it) }
+            .map { productEntityMapper.toDomain(it) }
             .orElse(null)
     }
 
     override fun findByIds(ids: List<UUID>): List<Product> {
         return springDataRepository.findAllByIdAndNotDeleted(ids)
-            .map { ProductEntityMapper.toDomain(it) }
+            .map { productEntityMapper.toDomain(it) }
     }
 
     override fun save(entity: Product): Product {
         val saved = springDataRepository.save(
-            ProductEntityMapper.toEntity(entity)
+            productEntityMapper.toEntity(entity)
         )
-        return ProductEntityMapper.toDomain(saved)
+        return productEntityMapper.toDomain(saved)
     }
 
     override fun deleteById(id: UUID): Boolean {

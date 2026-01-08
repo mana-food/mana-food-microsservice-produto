@@ -24,7 +24,7 @@ class ProductJpaEntity(
     @JoinColumn(name = "category_id", nullable = false)
     val category: CategoryJpaEntity,
 
-    @OneToMany(mappedBy = "product", cascade = [CascadeType.ALL], orphanRemoval = true)
+    @OneToMany(mappedBy = "product", cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.LAZY)
     val productItems: MutableList<ProductItemJpaEntity> = mutableListOf(),
 
     createdAt: LocalDateTime,
@@ -40,4 +40,26 @@ class ProductJpaEntity(
     updatedAt = updatedAt,
     updatedBy = updatedBy,
     deleted = deleted
-)
+) {
+
+    fun syncItems(items: List<ItemJpaEntity>, userId: UUID) {
+        productItems.clear()
+        items.forEach { item ->
+            val productItem = ProductItemJpaEntity(
+                id = UUID.randomUUID(),
+                product = this,
+                item = item,
+                createdAt = LocalDateTime.now(),
+                createdBy = userId,
+                deleted = false
+            )
+            productItems.add(productItem)
+        }
+    }
+
+    fun getItems(): List<ItemJpaEntity> {
+        return productItems.filter { !it.deleted }.map { it.item }
+    }
+}
+
+

@@ -2,6 +2,7 @@ package br.com.manafood.manafoodproduct.infrastructure.persistence.adapter
 
 import br.com.manafood.manafoodproduct.infrastructure.persistence.entity.ProductJpaEntity
 import br.com.manafood.manafoodproduct.infrastructure.persistence.entity.CategoryJpaEntity
+import br.com.manafood.manafoodproduct.infrastructure.persistence.mapper.ProductEntityMapper
 import br.com.manafood.manafoodproduct.infrastructure.persistence.repository.ProductJpaRepository
 import io.mockk.every
 import io.mockk.mockk
@@ -20,7 +21,8 @@ import kotlin.test.assertTrue
 class ProductJpaRepositoryAdapterTest {
 
     private val springRepo = mockk<ProductJpaRepository>()
-    private val adapter = ProductJpaRepositoryAdapter(springRepo)
+    private val productEntityMapper = mockk<ProductEntityMapper>()
+    private val adapter = ProductJpaRepositoryAdapter(springRepo, productEntityMapper)
 
     @Test
     fun `findById should return product when found`() {
@@ -43,7 +45,25 @@ class ProductJpaRepositoryAdapterTest {
             createdBy = UUID.randomUUID()
         )
 
+        val productDomain = br.com.manafood.manafoodproduct.domain.model.Product(
+            id = productJpa.id,
+            name = productJpa.name,
+            description = productJpa.description ?: "",
+            unitPrice = productJpa.unitPrice,
+            categoryId = categoryJpa.id,
+            category = br.com.manafood.manafoodproduct.domain.model.Category(
+                id = categoryJpa.id,
+                name = categoryJpa.name,
+                createdBy = categoryJpa.createdBy,
+                deleted = false
+            ),
+            items = mutableListOf(),
+            createdBy = productJpa.createdBy,
+            deleted = false
+        )
+
         every { springRepo.findByIdAndNotDeleted(productJpa.id) } returns Optional.of(productJpa)
+        every { productEntityMapper.toDomain(productJpa) } returns productDomain
 
         // When
         val result = adapter.findById(productJpa.id)
@@ -53,6 +73,7 @@ class ProductJpaRepositoryAdapterTest {
         assertEquals(productJpa.id, result.id)
         assertEquals(productJpa.name, result.name)
         verify(exactly = 1) { springRepo.findByIdAndNotDeleted(productJpa.id) }
+        verify(exactly = 1) { productEntityMapper.toDomain(productJpa) }
     }
 
     @Test
@@ -90,8 +111,34 @@ class ProductJpaRepositoryAdapterTest {
             createdBy = UUID.randomUUID()
         )
 
+        val productDomain = br.com.manafood.manafoodproduct.domain.model.Product(
+            id = productJpa.id,
+            name = productJpa.name,
+            description = productJpa.description ?: "",
+            unitPrice = productJpa.unitPrice,
+            categoryId = categoryJpa.id,
+            category = br.com.manafood.manafoodproduct.domain.model.Category(
+                id = categoryJpa.id,
+                name = categoryJpa.name,
+                createdBy = categoryJpa.createdBy,
+                deleted = false
+            ),
+            items = mutableListOf(),
+            createdBy = productJpa.createdBy,
+            deleted = false
+        )
+
         val page = PageImpl(listOf(productJpa), PageRequest.of(0, 10), 1)
+        val pagedDomain = br.com.manafood.manafoodproduct.domain.common.Paged(
+            items = listOf(productDomain),
+            page = 0,
+            pageSize = 10,
+            totalItems = 1L,
+            totalPages = 1
+        )
+
         every { springRepo.findPaged(PageRequest.of(0, 10)) } returns page
+        every { productEntityMapper.toPagedDomain(page) } returns pagedDomain
 
         // When
         val result = adapter.findPaged(0, 10)
@@ -133,6 +180,17 @@ class ProductJpaRepositoryAdapterTest {
             createdBy = category.createdBy
         )
 
+        val productJpa = ProductJpaEntity(
+            id = product.id,
+            name = product.name,
+            description = product.description,
+            unitPrice = product.unitPrice,
+            category = categoryJpa,
+            productItems = mutableListOf(),
+            createdAt = LocalDateTime.now(),
+            createdBy = product.createdBy
+        )
+
         val savedJpa = ProductJpaEntity(
             id = product.id,
             name = product.name,
@@ -144,7 +202,9 @@ class ProductJpaRepositoryAdapterTest {
             createdBy = product.createdBy
         )
 
-        every { springRepo.save(any<ProductJpaEntity>()) } returns savedJpa
+        every { productEntityMapper.toEntity(product) } returns productJpa
+        every { springRepo.save(productJpa) } returns savedJpa
+        every { productEntityMapper.toDomain(savedJpa) } returns product
 
         // When
         val result = adapter.save(product)
@@ -153,14 +213,25 @@ class ProductJpaRepositoryAdapterTest {
         assertNotNull(result)
         assertEquals(product.id, result.id)
         assertEquals(product.name, result.name)
-        verify(exactly = 1) { springRepo.save(any<ProductJpaEntity>()) }
+        verify(exactly = 1) { springRepo.save(productJpa) }
+        verify(exactly = 1) { productEntityMapper.toEntity(product) }
+        verify(exactly = 1) { productEntityMapper.toDomain(savedJpa) }
     }
 
     @Test
     fun `findPaged should return empty list when no products`() {
         val pageable = PageRequest.of(0, 10)
         val page = PageImpl<ProductJpaEntity>(emptyList(), pageable, 0)
+        val emptyPaged = br.com.manafood.manafoodproduct.domain.common.Paged<br.com.manafood.manafoodproduct.domain.model.Product>(
+            items = emptyList(),
+            page = 0,
+            pageSize = 10,
+            totalItems = 0L,
+            totalPages = 0
+        )
+
         every { springRepo.findPaged(pageable) } returns page
+        every { productEntityMapper.toPagedDomain(page) } returns emptyPaged
 
         val result = adapter.findPaged(0, 10)
 
@@ -211,7 +282,25 @@ class ProductJpaRepositoryAdapterTest {
             createdBy = UUID.randomUUID()
         )
 
+        val productDomain = br.com.manafood.manafoodproduct.domain.model.Product(
+            id = productJpa.id,
+            name = productJpa.name,
+            description = "",
+            unitPrice = productJpa.unitPrice,
+            categoryId = categoryJpa.id,
+            category = br.com.manafood.manafoodproduct.domain.model.Category(
+                id = categoryJpa.id,
+                name = categoryJpa.name,
+                createdBy = categoryJpa.createdBy,
+                deleted = false
+            ),
+            items = mutableListOf(),
+            createdBy = productJpa.createdBy,
+            deleted = false
+        )
+
         every { springRepo.findByIdAndNotDeleted(productJpa.id) } returns Optional.of(productJpa)
+        every { productEntityMapper.toDomain(productJpa) } returns productDomain
 
         val result = adapter.findById(productJpa.id)
 

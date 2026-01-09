@@ -102,7 +102,7 @@ class CategoryControllerTest(@Autowired val mockMvc: MockMvc) {
     fun `getById should return 200 with category when found`() {
         // Given
         val category = Fixtures.sampleCategory()
-        every { getCategoryByIdUseCase.execute(GetCategoryByIdQuery(category.id!!)) } returns category
+        every { getCategoryByIdUseCase.execute(GetCategoryByIdQuery(category.id)) } returns category
 
         // When & Then
         mockMvc.perform(get("/api/categories/${category.id}"))

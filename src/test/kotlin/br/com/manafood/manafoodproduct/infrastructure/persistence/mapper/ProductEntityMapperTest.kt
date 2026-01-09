@@ -1,8 +1,12 @@
 package br.com.manafood.manafoodproduct.infrastructure.persistence.mapper
 
 import br.com.manafood.manafoodproduct.infrastructure.persistence.entity.CategoryJpaEntity
+import br.com.manafood.manafoodproduct.infrastructure.persistence.entity.ItemJpaEntity
 import br.com.manafood.manafoodproduct.infrastructure.persistence.entity.ProductJpaEntity
+import br.com.manafood.manafoodproduct.infrastructure.persistence.repository.ItemJpaRepository
 import br.com.manafood.manafoodproduct.testutil.Fixtures
+import io.mockk.every
+import io.mockk.mockk
 import java.time.LocalDateTime
 import java.util.UUID
 import kotlin.test.Test
@@ -11,11 +15,14 @@ import kotlin.test.assertNotNull
 
 class ProductEntityMapperTest {
 
+    private val itemJpaRepository = mockk<ItemJpaRepository>()
+    private val mapper = ProductEntityMapper(itemJpaRepository)
+
     @Test
     fun `toDomain should map jpa entity to domain`() {
         val jpa = Fixtures.sampleProductJpaEntity()
 
-        val domain = ProductEntityMapper.toDomain(
+        val domain = mapper.toDomain(
             ProductJpaEntity(
                 id = jpa.id,
                 name = jpa.name,
@@ -47,7 +54,10 @@ class ProductEntityMapperTest {
     fun `toEntity should map domain to jpa entity`() {
         val domain = Fixtures.sampleProduct()
 
-        val entity = ProductEntityMapper.toEntity(domain)
+        // Mock para retornar lista vazia de itens
+        every { itemJpaRepository.findAllByIdAndNotDeleted(any()) } returns emptyList()
+
+        val entity = mapper.toEntity(domain)
 
         assertNotNull(entity)
         assertEquals(domain.id, entity.id)

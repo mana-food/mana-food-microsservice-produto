@@ -27,7 +27,7 @@ class CreateItemUseCaseTest {
         val command = CreateItemCommand(
             name = "New Item",
             description = "Description",
-            categoryId = category.id!!,
+            categoryId = category.id,
             createdBy = UUID.randomUUID()
         )
 
@@ -81,7 +81,7 @@ class CreateItemUseCaseTest {
         val command = CreateItemCommand(
             name = "New Item",
             description = "Description",
-            categoryId = category.id!!,
+            categoryId = category.id,
             createdBy = UUID.randomUUID()
         )
 

@@ -1,10 +1,13 @@
+server:
+  port: 8081
+
 spring:
   application:
     name: manafoodproduct
 
   # Configurações para desenvolvimento local
   datasource:
-    url: jdbc:mysql://localhost:3307/db_manafood_product?useSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3307/manafood_product?useSSL=false&allowPublicKeyRetrieval=true
     username: root
     password: senha123
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -29,6 +32,13 @@ logging:
     org.springframework.web: DEBUG
     org.hibernate.SQL: DEBUG
     br.com.manafood: DEBUG
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
 
 management:
   endpoints:

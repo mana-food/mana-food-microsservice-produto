@@ -23,7 +23,7 @@ class DeleteProductUseCaseTest {
         // Given
         val existingProduct = Fixtures.sampleProduct()
         val command = DeleteProductCommand(
-            id = existingProduct.id!!,
+            id = existingProduct.id,
             deletedBy = UUID.randomUUID()
         )
 
@@ -69,7 +69,7 @@ class DeleteProductUseCaseTest {
         // Given
         val existingProduct = Fixtures.sampleProduct()
         val command = DeleteProductCommand(
-            id = existingProduct.id!!,
+            id = existingProduct.id,
             deletedBy = UUID.randomUUID()
         )
 

@@ -6,6 +6,7 @@ import br.com.manafood.manafoodproduct.domain.repository.ProductRepository
 import br.com.manafood.manafoodproduct.infrastructure.persistence.adapter.CategoryJpaRepositoryAdapter
 import br.com.manafood.manafoodproduct.infrastructure.persistence.adapter.ItemJpaRepositoryAdapter
 import br.com.manafood.manafoodproduct.infrastructure.persistence.adapter.ProductJpaRepositoryAdapter
+import br.com.manafood.manafoodproduct.infrastructure.persistence.mapper.ProductEntityMapper
 import br.com.manafood.manafoodproduct.infrastructure.persistence.repository.CategoryJpaRepository
 import br.com.manafood.manafoodproduct.infrastructure.persistence.repository.ItemJpaRepository
 import br.com.manafood.manafoodproduct.infrastructure.persistence.repository.ProductJpaRepository
@@ -17,8 +18,10 @@ class RepositoryConfig {
 
     @Bean
     fun productRepository(
-        springRepo: ProductJpaRepository
-    ): ProductRepository = ProductJpaRepositoryAdapter(springRepo)
+        springRepo: ProductJpaRepository,
+        productEntityMapper: ProductEntityMapper,
+        itemJpaRepository: ItemJpaRepository
+    ): ProductRepository = ProductJpaRepositoryAdapter(springRepo, productEntityMapper, itemJpaRepository)
 
     @Bean
     fun itemRepository(

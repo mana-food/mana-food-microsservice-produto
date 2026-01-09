@@ -187,7 +187,7 @@ Product N ──── N Item (tabela intermediária: product_item)
 
 Acesse a documentação interativa da API:
 ```
-http://localhost:8080/swagger-ui.html
+http://localhost:8081/swagger-ui.html
 ```
 
 ---
@@ -235,10 +235,10 @@ docker-compose up -d
 docker-compose logs -f app-mana-food-product
 
 # 5. Teste a aplicação
-curl http://localhost:8080/actuator/health
+curl http://localhost:8081/actuator/health
 
 # 6. Acesse o Swagger
-# Abra: http://localhost:8080/swagger-ui.html
+# Abra: http://localhost:8081/swagger-ui.html
 
 # 7. Parar os containers
 docker-compose down
@@ -246,7 +246,7 @@ docker-compose down
 
 **Serviços criados:**
 - MySQL: `localhost:3307`
-- Aplicação: `localhost:8080`
+- Aplicação: `localhost:8081`
 
 ### Opção 2: Banco Docker + Aplicação Local 🔧
 
@@ -576,7 +576,7 @@ mvn spring-boot:run -Dspring-boot.run.profiles=local
 | `SPRING_DATASOURCE_PASSWORD` | Senha do banco | `sua_senha_aqui` |
 | `MYSQL_ROOT_PASSWORD` | Senha root MySQL (Docker) | `sua_senha_mysql` |
 | `SONAR_TOKEN` | Token SonarCloud | `seu_token_sonar` |
-| `SERVER_PORT` | Porta da aplicação | `8080` |
+| `SERVER_PORT` | Porta da aplicação | `8081` |
 | `SPRING_PROFILES_ACTIVE` | Profile ativo | `local` ou `prod` |
 
 ---
@@ -603,7 +603,7 @@ target/ManaFoodProduct-0.0.1-SNAPSHOT.jar
 docker build -t manafood-product:latest .
 
 # Run container
-docker run -p 8080:8080 \
+docker run -p 8081:8081 \
   -e SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3307/manafoodproduct \
   -e SPRING_DATASOURCE_USERNAME=manafood \
   -e SPRING_DATASOURCE_PASSWORD=manafood123 \
@@ -665,9 +665,9 @@ Error: Could not find a valid Docker environment
 
 ### Porta já em uso
 ```
-Error: Port 8080 is already in use
+Error: Port 8081 is already in use
 ```
-**Solução:** Pare outras aplicações na porta 8080 ou mude no `application.yml`
+**Solução:** Pare outras aplicações na porta 8081 ou mude no `application.yml`
 
 ### Erro de conexão com banco
 ```

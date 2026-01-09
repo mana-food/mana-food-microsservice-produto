@@ -23,7 +23,7 @@ class DeleteItemUseCaseTest {
         // Given
         val existingItem = Fixtures.sampleItem()
         val command = DeleteItemCommand(
-            id = existingItem.id!!,
+            id = existingItem.id,
             deletedBy = UUID.randomUUID()
         )
 
@@ -69,7 +69,7 @@ class DeleteItemUseCaseTest {
         // Given
         val existingItem = Fixtures.sampleItem()
         val command = DeleteItemCommand(
-            id = existingItem.id!!,
+            id = existingItem.id,
             deletedBy = UUID.randomUUID()
         )
 

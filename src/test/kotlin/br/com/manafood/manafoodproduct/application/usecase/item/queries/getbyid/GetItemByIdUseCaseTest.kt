@@ -16,9 +16,9 @@ class GetItemByIdUseCaseTest {
     @Test
     fun `execute returns item when found`() {
         val item = Fixtures.sampleItem()
-        every { repository.findById(item.id!!) } returns item
+        every { repository.findById(item.id) } returns item
 
-        val result = useCase.execute(GetItemByIdQuery(item.id!!))
+        val result = useCase.execute(GetItemByIdQuery(item.id))
 
         assertEquals(item, result)
     }

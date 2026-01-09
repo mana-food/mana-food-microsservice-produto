@@ -15,7 +15,7 @@ class GetAllCategoriesUseCase(
             pageSize = query.pageSize
         )
 
-        if(categoriesListFinded.items.isEmpty()) {
+        if(categoriesListFinded.items.isNotEmpty()) {
            logger.debug("$PREFIX Foi/Foram encontrado(s) [${categoriesListFinded.totalItems}] categoria(s) na base de dados.")
         } else {
             logger.debug("$PREFIX Não foi encontrado nenhuma categoria na base de dados.")

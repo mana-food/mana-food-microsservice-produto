@@ -19,8 +19,8 @@ class ItemJpaEntity(
     @JoinColumn(name = "category_id", nullable = false)
     val category: CategoryJpaEntity,
 
-    @OneToMany(mappedBy = "item", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val products: MutableList<ProductItemJpaEntity> = mutableListOf(),
+    @OneToMany(mappedBy = "item", cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.LAZY)
+    val productItems: MutableList<ProductItemJpaEntity> = mutableListOf(),
 
     createdAt: LocalDateTime,
     createdBy: UUID,

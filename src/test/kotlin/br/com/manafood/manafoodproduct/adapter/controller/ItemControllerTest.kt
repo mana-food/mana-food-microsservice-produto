@@ -108,7 +108,7 @@ class ItemControllerTest(@Autowired val mockMvc: MockMvc) {
     fun `getById should return 200 with item when found`() {
         // Given
         val item = Fixtures.sampleItem()
-        every { getItemByIdUseCase.execute(GetItemByIdQuery(item.id!!)) } returns item
+        every { getItemByIdUseCase.execute(GetItemByIdQuery(item.id)) } returns item
 
         // When & Then
         mockMvc.perform(get("/api/items/${item.id}"))

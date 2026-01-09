@@ -1,4 +1,4 @@
-name: mana-food-project-services
+name: mana-food-product-services
 
 services:
 
@@ -6,11 +6,13 @@ services:
     container_name: manafood-product-mysql
     image: mysql:8.0
     restart: always
+    command: --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_CHARSET: utf8mb4
       MYSQL_COLLATION: utf8mb4_unicode_ci
+      MYSQL_ROOT_HOST: '%'
     ports:
       - "3307:3306"
     volumes:
@@ -28,7 +30,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - "8081:8081"
     depends_on:
       db-mana-food-product:
         condition: service_healthy
